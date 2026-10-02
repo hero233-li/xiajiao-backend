@@ -1,0 +1,55 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+spring:
+  application:
+    name: xuexizhitu-backend
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/xuexizhitu?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&characterEncoding=UTF-8&sslMode=DISABLED&allowPublicKeyRetrieval=true}
+    username: ${DB_USER:xuexizhitu}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    clean-disabled: true
+  jackson:
+    default-property-inclusion: always
+    deserialization:
+      fail-on-unknown-properties: true
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 9MB
+springdoc:
+  swagger-ui:
+    persist-authorization: false
+app:
+  files:
+    root: ${APP_FILES_ROOT:./data/private}
+    cleanup-enabled: ${APP_FILES_CLEANUP_ENABLED:true}
+  auth:
+    registration-mode: ${APP_AUTH_REGISTRATION_MODE:DISABLED}
+  jwt:
+    secret-base64: ${JWT_SECRET_BASE64}
+    issuer: ${JWT_ISSUER:xuexizhitu}
+    audience: ${JWT_AUDIENCE:xuexizhitu-api}
+    access-ttl: ${JWT_ACCESS_TTL:15m}
+    refresh-ttl: ${JWT_REFRESH_TTL:7d}
+  bootstrap:
+    enabled: ${APP_BOOTSTRAP_ENABLED:false}
+    username: ${APP_BOOTSTRAP_USERNAME:}
+    email: ${APP_BOOTSTRAP_EMAIL:}
+    password: ${APP_BOOTSTRAP_PASSWORD:}

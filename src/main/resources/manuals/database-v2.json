@@ -1,0 +1,391 @@
+{
+  "courseId": "72494a28-2cb8-5df8-8f3f-2ba84b681e0d",
+  "releaseId": "2d6a538a-931a-5a34-801c-1f3ceac3ec26",
+  "sections": [
+    {
+      "chapterId": "e7c54fb0-6e14-5591-b086-74122e587522",
+      "title": "实践手册练习 · 第一部分：基础操作与查询",
+      "markdown": "\n\n## 手册说明\n\n\n> 适用范围：上海交通大学成人高等教育《13171 数据库及其应用（实践）》考核大纲  \n> 考试特点：MySQL 5.5 及以上、上机闭卷、60 分钟、成绩为合格/不合格  \n> 学习目标：不追求复杂理论，优先做到“看懂题目、写出 SQL、立即验证、稳定完成”。\n\n---\n\n\n## 1. 使用方法\n\n\n建议每天学习 90～120 分钟：\n\n1. 先关闭答案，完成当天练习。\n2. 每条 SQL 都要亲手输入并执行，不要只看。\n3. 出错时先阅读报错，再对照答案。\n4. 把错误记录到文末的“错题记录表”。\n5. 考前至少完成两次 60 分钟闭卷模拟。\n\n每日时间安排：\n\n- 15 分钟：默写上一天的命令。\n- 25 分钟：学习本章知识点。\n- 60 分钟：完成上机练习。\n- 20 分钟：不看资料重做错题。\n\n### 14 天过关路线\n\n| 天数 | 学习内容 | 当天目标 |\n|---|---|---|\n| 第 1 天 | MySQL 服务、登录、数据库操作 | 会创建、选择、查看、删除数据库 |\n| 第 2 天 | 建表、查看和修改表结构 | 独立创建三张关联表 |\n| 第 3 天 | 约束、复制表、重命名表 | 掌握主键、外键、唯一、非空和默认值 |\n| 第 4 天 | 插入、修改、删除数据 | 熟练完成数据增删改 |\n| 第 5 天 | 条件查询和排序 | 完成单表查询 |\n| 第 6 天 | 聚合和分组查询 | 掌握聚合函数、GROUP BY、HAVING |\n| 第 7 天 | 多表连接 | 掌握内连接、左连接、右连接 |\n| 第 8 天 | 子查询和联合查询 | 掌握子查询与 UNION |\n| 第 9 天 | 索引和视图 | 会创建、查看、使用和删除 |\n| 第 10 天 | 触发器 | 会建立数据变更日志触发器 |\n| 第 11 天 | 存储过程 | 会创建、调用和删除过程 |\n| 第 12 天 | 存储函数和事件 | 会创建、调用函数及创建事件 |\n| 第 13 天 | 用户、权限、备份、恢复、日志 | 完成管理维护基本操作 |\n| 第 14 天 | 60 分钟模拟考试 | 闭卷完成并订正 |\n\n---\n\n\n## 2. 考纲对应的过关重点\n\n\n### 第一优先级：必须熟练操作\n\n- 创建、选择、修改、查看和删除数据库。\n- 创建、修改、重命名、复制、查看和删除数据表。\n- 插入、更新和删除数据。\n- 条件、聚合、连接、嵌套和联合查询。\n- 主键、外键、唯一、非空和默认值约束。\n- 创建、查看和删除索引。\n- 创建、查询、更新和删除视图。\n\n### 第二优先级：必须会照结构写出\n\n- 创建和删除触发器。\n- 创建、调用和删除存储过程。\n- 创建、调用和删除存储函数。\n- 创建、修改和删除事件。\n\n### 第三优先级：掌握基本操作\n\n- MySQL 服务启动、关闭和客户端登录。\n- 用户创建、修改和删除。\n- 权限授予、查看和撤销。\n- 数据库备份与恢复。\n- 二进制日志的概念和基本使用。\n\n---\n\n\n## 3. 初始化练习环境\n\n\n以下脚本会删除同名练习数据库。只允许在自己的练习环境执行，不要在保存真实数据的数据库中执行。\n\n```sql\nDROP DATABASE IF EXISTS exam_practice;\n\nCREATE DATABASE exam_practice\n  DEFAULT CHARACTER SET utf8;\n\nUSE exam_practice;\n\nCREATE TABLE student (\n  student_id INT PRIMARY KEY AUTO_INCREMENT,\n  student_no CHAR(8) NOT NULL UNIQUE,\n  student_name VARCHAR(30) NOT NULL,\n  gender ENUM('男', '女') NOT NULL DEFAULT '男',\n  birth_date DATE,\n  class_name VARCHAR(30),\n  phone VARCHAR(20)\n) ENGINE=InnoDB;\n\nCREATE TABLE course (\n  course_id INT PRIMARY KEY AUTO_INCREMENT,\n  course_name VARCHAR(50) NOT NULL UNIQUE,\n  credit DECIMAL(3,1) NOT NULL DEFAULT 2.0\n) ENGINE=InnoDB;\n\nCREATE TABLE score (\n  student_id INT NOT NULL,\n  course_id INT NOT NULL,\n  score DECIMAL(5,2) NOT NULL,\n  exam_date DATE,\n  PRIMARY KEY (student_id, course_id),\n  CONSTRAINT fk_score_student\n    FOREIGN KEY (student_id) REFERENCES student(student_id),\n  CONSTRAINT fk_score_course\n    FOREIGN KEY (course_id) REFERENCES course(course_id)\n) ENGINE=InnoDB;\n\nCREATE TABLE operation_log (\n  log_id INT PRIMARY KEY AUTO_INCREMENT,\n  action_type VARCHAR(20) NOT NULL,\n  detail VARCHAR(255) NOT NULL,\n  action_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP\n) ENGINE=InnoDB;\n\nINSERT INTO student\n  (student_id, student_no, student_name, gender, birth_date, class_name, phone)\nVALUES\n  (1, '20260001', '张明', '男', '2001-03-12', '计算机1班', '13800000001'),\n  (2, '20260002', '李华', '女', '2002-06-18', '计算机1班', '13800000002'),\n  (3, '20260003', '王强', '男', '2000-11-02', '计算机1班', '13800000003'),\n  (4, '20260004', '赵敏', '女', '2001-09-25', '计算机2班', '13800000004'),\n  (5, '20260005', '陈晨', '女', '2002-02-14', '计算机2班', NULL),\n  (6, '20260006', '刘洋', '男', '2001-12-08', '计算机2班', '13800000006'),\n  (7, '20260007', '周宁', '女', '2000-07-19', '网络1班', '13800000007'),\n  (8, '20260008', '孙浩', '男', '2002-10-30', '网络1班', NULL);\n\nINSERT INTO course (course_id, course_name, credit)\nVALUES\n  (1, '数据库原理', 4.0),\n  (2, '计算机网络', 3.0),\n  (3, '操作系统', 4.0),\n  (4, '程序设计', 3.5),\n  (5, '软件工程', 2.5);\n\nINSERT INTO score (student_id, course_id, score, exam_date)\nVALUES\n  (1, 1, 88, '2026-06-20'),\n  (1, 2, 76, '2026-06-22'),\n  (1, 3, 91, '2026-06-24'),\n  (2, 1, 95, '2026-06-20'),\n  (2, 2, 82, '2026-06-22'),\n  (2, 4, 89, '2026-06-26'),\n  (3, 1, 58, '2026-06-20'),\n  (3, 3, 67, '2026-06-24'),\n  (4, 1, 79, '2026-06-20'),\n  (4, 2, 93, '2026-06-22'),\n  (4, 3, 85, '2026-06-24'),\n  (5, 2, 64, '2026-06-22'),\n  (5, 4, 72, '2026-06-26'),\n  (6, 1, 45, '2026-06-20'),\n  (6, 3, 59, '2026-06-24'),\n  (7, 1, 86, '2026-06-20'),\n  (7, 4, 90, '2026-06-26');\n\nSHOW DATABASES;\nSHOW TABLES;\nDESC student;\nSELECT * FROM student;\n```\n\n### 初始化检查\n\n执行下面语句，预期得到：学生 8 人、课程 5 门、成绩 17 条。\n\n```sql\nSELECT COUNT(*) AS student_count FROM student;\nSELECT COUNT(*) AS course_count FROM course;\nSELECT COUNT(*) AS score_count FROM score;\n```\n\n---\n\n\n## 4. 数据库和数据表练习\n\n\n### 必背命令框架\n\n```sql\nSHOW DATABASES;\nCREATE DATABASE 数据库名;\nUSE 数据库名;\nALTER DATABASE 数据库名 DEFAULT CHARACTER SET utf8;\nDROP DATABASE 数据库名;\n\nSHOW TABLES;\nDESC 表名;\nSHOW CREATE TABLE 表名;\n\nCREATE TABLE 表名 (...);\nALTER TABLE 表名 ADD COLUMN 字段名 数据类型;\nALTER TABLE 表名 MODIFY COLUMN 字段名 数据类型;\nALTER TABLE 表名 CHANGE COLUMN 原字段名 新字段名 数据类型;\nALTER TABLE 表名 DROP COLUMN 字段名;\nALTER TABLE 表名 RENAME TO 新表名;\nDROP TABLE 表名;\n\nCREATE TABLE 新表 LIKE 原表;\nCREATE TABLE 新表 AS SELECT * FROM 原表;\n```\n\n### 练习题\n\n1. 创建数据库 `temp_exam`，字符集设置为 `utf8`。\n2. 选择 `temp_exam`，创建表 `book`，包含图书编号、书名、价格和出版日期。\n3. 为 `book` 添加 `publisher` 字段。\n4. 把 `publisher` 的长度修改为 100。\n5. 把 `publisher` 改名为 `press`。\n6. 复制 `book` 的表结构，生成 `book_backup`。\n7. 把 `book_backup` 重命名为 `old_book`。\n8. 查看 `book` 的表结构和建表语句。\n9. 删除 `old_book`，最后删除 `temp_exam` 数据库。\n\n\n\n---\n\n\n## 5. 数据增、删、改练习\n\n\n### 必背命令框架\n\n```sql\nINSERT INTO 表名 (字段1, 字段2) VALUES (值1, 值2);\n\nUPDATE 表名\nSET 字段名 = 新值\nWHERE 条件;\n\nDELETE FROM 表名\nWHERE 条件;\n```\n\n> 安全习惯：执行 `UPDATE` 或 `DELETE` 前，先把同样的 `WHERE` 放进 `SELECT` 中检查目标数据。\n\n### 练习题\n\n1. 向 `student` 添加学生：学号 `20260009`、姓名 `吴桐`、女、计算机 1 班。\n2. 把吴桐的电话号码修改为 `13800000009`。\n3. 给数据库原理课程的所有成绩增加 2 分，但最高不能超过 100 分。\n4. 删除吴桐。由于没有成绩记录，应该可以直接删除。\n5. 复制 `student` 表的结构与数据，生成 `student_copy`。\n6. 删除 `student_copy` 中网络 1 班的学生。\n7. 删除 `student_copy`。\n\n\n\n---\n\n\n## 6. 单表、聚合和分组查询\n\n\n### SQL 执行顺序口诀\n\n书写顺序：\n\n```text\nSELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT\n```\n\n理解执行顺序：\n\n```text\nFROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT\n```\n\n### 练习题\n\n1. 查询计算机 1 班的所有学生。\n2. 查询所有女生的姓名和班级。\n3. 查询姓名中包含“明”的学生。\n4. 查询电话号码为空的学生。\n5. 查询出生日期在 `2001-01-01` 到 `2001-12-31` 之间的学生。\n6. 查询所有成绩，按成绩从高到低排列，只显示前 5 条。\n7. 查询一共有多少名学生。\n8. 查询成绩的最高分、最低分和平均分。\n9. 按课程编号统计选课人数和平均分。\n10. 查询平均分不低于 80 分的课程编号。\n11. 统计每个班级的学生人数，并按人数降序排列。\n12. 查询不重复的班级名称。\n\n\n\n### 易错点\n\n- 判断空值使用 `IS NULL` 或 `IS NOT NULL`，不能写 `= NULL`。\n- 分组前筛选使用 `WHERE`，分组后筛选使用 `HAVING`。\n- 降序是 `DESC`，升序是 `ASC`。\n- `COUNT(*)` 统计行数；`COUNT(字段)` 不统计该字段为 `NULL` 的行。\n\n---\n\n\n## 7. 连接、子查询和联合查询\n\n\n### 必背命令框架\n\n```sql\nSELECT 字段\nFROM 表1 AS a\nINNER JOIN 表2 AS b ON a.关联字段 = b.关联字段;\n\nSELECT 字段\nFROM 表1 AS a\nLEFT JOIN 表2 AS b ON a.关联字段 = b.关联字段;\n\nSELECT 字段\nFROM 表1\nWHERE 字段 IN (SELECT 字段 FROM 表2 WHERE 条件);\n\nSELECT ...\nUNION\nSELECT ...;\n```\n\n### 练习题\n\n1. 查询学生姓名、课程名称和成绩。\n2. 查询张明的全部课程名称和成绩。\n3. 查询数据库原理课程的学生姓名和成绩，按成绩降序排列。\n4. 查询所有学生及其平均分，没有成绩的学生也必须显示。\n5. 查询从未被选择的课程。\n6. 查询高于全部成绩平均分的成绩记录。\n7. 查询数据库原理课程中高于本课程平均分的学生。\n8. 查询至少有一门课程不及格的学生。\n9. 查询没有任何成绩记录的学生。\n10. 使用 `UNION` 合并计算机 1 班与网络 1 班学生的姓名和班级。\n\n\n\n### 易错点\n\n- 多张表都有同名字段时，必须使用表名或别名前缀，例如 `s.student_id`。\n- `LEFT JOIN` 是否保留左表全部数据，关键看左表是谁。\n- `UNION` 会去重，`UNION ALL` 不去重且速度更快。\n- 子查询返回多行时，通常使用 `IN`，不能直接使用 `=`。\n\n---\n\n\n## 8. 完整性约束练习\n\n\n### 必须掌握的约束\n\n| 约束 | 作用 |\n|---|---|\n| `PRIMARY KEY` | 主键，唯一且不能为空 |\n| `FOREIGN KEY` | 外键，保证表之间引用有效 |\n| `UNIQUE` | 保证字段值唯一 |\n| `NOT NULL` | 字段不能为空 |\n| `DEFAULT` | 未提供值时使用默认值 |\n\n### 练习题\n\n1. 创建 `department` 表，包含部门编号主键和唯一的部门名称。\n2. 给 `student` 添加 `department_id` 字段。\n3. 为该字段添加名称为 `fk_student_department` 的外键。\n4. 查看 `student` 完整建表语句。\n5. 删除该外键，再删除字段和 `department` 表。\n\n\n\n### 易错点\n\n- 外键字段和被引用字段的数据类型应一致。\n- 表应使用支持外键的 `InnoDB` 引擎。\n- 删除被引用表之前，一般需要先删除外键。\n- 删除外键使用的是外键名称，不一定是字段名称。\n- 较老 MySQL 版本可能接受 `CHECK` 语法但不真正执行检查，不把它作为核心练习。\n\n---\n",
+      "exercises": [
+        {
+          "itemId": "a8168cee-8f4f-5571-8f09-406bfe4dde49",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "5d2412f3-fa4d-5986-b209-9354ae2a43e0",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "1687b248-d778-5c12-98e4-e8f11af77f4b",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "f830bf68-0f66-5b63-be61-9b95350b65ab",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "a975f2d3-4c5f-516a-9d40-432dc29bed05",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "f4b37290-575f-50fc-8959-ff19720750b6",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "ea75e902-6206-5418-b07c-e1b21ee7a31e",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "f040903b-68fa-5c69-b4bb-abe9d02b73d2",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "beaf4c1b-bbe7-50f4-9e01-c6bee31d0929",
+          "exampleId": "ee0ed6cc-dc1a-5d6f-83ce-28506d3f15ac"
+        },
+        {
+          "itemId": "4f014da0-ab56-501d-8bb7-ffbbc4debc3a",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "54fc9cb8-bd45-52d1-927e-ea551110f01b",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "a3084e4e-0b92-541a-a760-35fa6dd4c52f",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "435436e5-e5f6-5ed7-8766-6064b4dcdfdc",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "7682aec7-b217-553e-9b95-1d0f224959fd",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "7e869a4c-93cf-51c6-adf7-ce2b145ae755",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "70cf3f66-20c3-5966-ac50-6fb60bec486a",
+          "exampleId": "188df3ec-38d1-5e27-b413-203cf7c42edb"
+        },
+        {
+          "itemId": "9521cb2c-0583-59bd-a7aa-ea26b610b30b",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "1e617918-3994-5d75-af4d-93fcca7fdd85",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "bb46f6b8-1d33-55c6-b211-e377557bb8cd",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "1fbaffd0-7de8-56ee-a4a5-63ada2d3254f",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "d18594d4-1817-5765-aa07-978dc54d8255",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "2cc84490-5933-5b1c-8980-26c693b6daea",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "53e903d6-4d83-5781-b564-6790611776d4",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "5dd50cb7-15f2-531b-b675-ea3d2ecf7ce7",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "e0138f1d-26b6-5231-95f3-e74ec50d6132",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "7ebd5a19-3ff0-59b3-8de7-d1d83fd8cdcc",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "19c59c33-db5d-5f5e-9222-9d4bd0d3a704",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "4ad2ecfd-7f23-5716-a468-885a646c3351",
+          "exampleId": "23982a5e-fc88-521e-8e78-1e1ff05a3215"
+        },
+        {
+          "itemId": "c16e1f13-5f9f-5636-b407-28732ac4921d",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "41a1d024-ca0d-562a-bfb4-9116d09ac6dc",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "77b4c878-b797-54df-b137-9f033aaa938d",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "937d268f-e537-50d9-baee-c0d07e831286",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "e74a4208-2ea4-518c-a196-d0753512ac91",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "e35276d2-942c-567c-9b03-8c4b3bc6d46f",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "11c16a1d-b0da-5bdd-a1d3-90fc6c6d8010",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "f8b5ad4c-ecce-5cee-9323-473f9842349f",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "95fdb554-fb1d-59c4-af91-0c695166c589",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "d0933418-be8d-568c-9bc4-2bc9b38632bf",
+          "exampleId": "2ec43e54-454d-5528-a6af-ff0aa9e09a17"
+        },
+        {
+          "itemId": "e9470912-b9a9-50d0-878e-05670be0720c",
+          "exampleId": "d344373d-39b5-586a-9619-02fa25ec2e07"
+        },
+        {
+          "itemId": "068f2f8b-7433-5655-a2f2-d0819631da71",
+          "exampleId": "d344373d-39b5-586a-9619-02fa25ec2e07"
+        },
+        {
+          "itemId": "f92bd4bf-6bf1-5aeb-9397-4b6b20377dc4",
+          "exampleId": "d344373d-39b5-586a-9619-02fa25ec2e07"
+        },
+        {
+          "itemId": "7fa9e850-bae1-519c-aede-604b1174da09",
+          "exampleId": "d344373d-39b5-586a-9619-02fa25ec2e07"
+        },
+        {
+          "itemId": "9303994e-afe1-566b-9f21-e277022779bc",
+          "exampleId": "d344373d-39b5-586a-9619-02fa25ec2e07"
+        }
+      ]
+    },
+    {
+      "chapterId": "eefc18f5-11ce-5dc3-9828-617d8a5c69e8",
+      "title": "实践手册练习 · 第二部分：数据库对象与编程",
+      "markdown": "\n\n## 9. 索引练习\n\n\n### 必背命令框架\n\n```sql\nCREATE INDEX 索引名 ON 表名(字段名);\nCREATE UNIQUE INDEX 索引名 ON 表名(字段名);\nSHOW INDEX FROM 表名;\nDROP INDEX 索引名 ON 表名;\n```\n\n### 练习题\n\n1. 在 `student` 的姓名字段上创建普通索引 `idx_student_name`。\n2. 在班级和性别上创建联合索引 `idx_class_gender`。\n3. 查看 `student` 的全部索引。\n4. 删除刚创建的两个索引。\n\n\n\n### 概念速记\n\n- 索引用于提高查询速度，但会占用空间，也会增加增删改数据的成本。\n- 主键和唯一约束通常会自动建立索引。\n- 经常用于查询条件、连接条件和排序的字段适合考虑索引。\n- 数据量很小或经常修改但很少查询的字段，不必盲目建立索引。\n\n---\n\n\n## 10. 视图练习\n\n\n### 必背命令框架\n\n```sql\nCREATE VIEW 视图名 AS SELECT ...;\nCREATE OR REPLACE VIEW 视图名 AS SELECT ...;\nSHOW CREATE VIEW 视图名;\nSELECT * FROM 视图名;\nDROP VIEW 视图名;\n```\n\n### 练习题\n\n1. 创建视图 `v_student_score`，显示学生姓名、课程名称和成绩。\n2. 查询该视图中不及格的记录。\n3. 创建简单视图 `v_computer1_student`，显示计算机 1 班学生。\n4. 通过简单视图修改张明的电话号码。\n5. 把 `v_computer1_student` 修改为只显示学号、姓名和电话。\n6. 查看视图定义，最后删除两个视图。\n\n\n\n### 概念速记\n\n- 表实际存储数据；普通视图主要保存查询定义。\n- 视图可以简化复杂查询、隐藏部分字段和控制访问范围。\n- 单表、无聚合的简单视图通常可以更新。\n- 包含聚合、分组、`DISTINCT`、`UNION` 等操作的视图通常不能直接更新。\n\n---\n\n\n## 11. 触发器练习\n\n\n### 必背知识\n\n- 触发时间：`BEFORE`、`AFTER`。\n- 触发事件：`INSERT`、`UPDATE`、`DELETE`。\n- `NEW.字段` 表示新增或修改后的值。\n- `OLD.字段` 表示修改或删除前的值。\n- `INSERT` 只能使用 `NEW`，`DELETE` 只能使用 `OLD`，`UPDATE` 可以同时使用二者。\n\n### 练习一：记录成绩修改日志\n\n```sql\nDELIMITER $$\n\nCREATE TRIGGER trg_score_after_update\nAFTER UPDATE ON score\nFOR EACH ROW\nBEGIN\n  INSERT INTO operation_log(action_type, detail)\n  VALUES (\n    'UPDATE',\n    CONCAT(\n      '学生ID=', OLD.student_id,\n      ',课程ID=', OLD.course_id,\n      ',原成绩=', OLD.score,\n      ',新成绩=', NEW.score\n    )\n  );\nEND$$\n\nDELIMITER ;\n```\n\n验证：\n\n```sql\nUPDATE score\nSET score = 89\nWHERE student_id = 1 AND course_id = 1;\n\nSELECT * FROM operation_log ORDER BY log_id DESC;\nSHOW TRIGGERS;\n```\n\n删除：\n\n```sql\nDROP TRIGGER IF EXISTS trg_score_after_update;\n```\n\n### 练习二：阻止录入非法成绩\n\n```sql\nDELIMITER $$\n\nCREATE TRIGGER trg_score_before_insert\nBEFORE INSERT ON score\nFOR EACH ROW\nBEGIN\n  IF NEW.score < 0 OR NEW.score > 100 THEN\n    SIGNAL SQLSTATE '45000'\n      SET MESSAGE_TEXT = '成绩必须在0到100之间';\n  END IF;\nEND$$\n\nDELIMITER ;\n```\n\n> `SIGNAL` 从 MySQL 5.5 的后续版本开始支持。如果考试环境较老，应以考场版本和老师提供的示例为准。最稳妥的过关重点仍是会写触发器基本结构、`OLD` 和 `NEW`。\n\n### 自测题\n\n1. 创建删除成绩后的日志触发器。\n2. 删除该触发器。\n3. 说明 `BEFORE` 和 `AFTER` 的区别。\n\n\n\n### MySQL 5.5 注意事项\n\nMySQL 5.5 对同一张表的同一种“触发时间 + 触发事件”通常只允许一个触发器。例如，同一张表不能同时存在两个 `AFTER UPDATE` 触发器。修改触发器一般使用“删除后重新创建”。\n\n---\n\n\n## 12. 存储过程练习\n\n\n### 必背结构\n\n```sql\nDELIMITER $$\n\nCREATE PROCEDURE 过程名(IN 参数名 数据类型)\nBEGIN\n  SQL语句;\nEND$$\n\nDELIMITER ;\n\nCALL 过程名(参数值);\nDROP PROCEDURE 过程名;\n```\n\n### 练习一：按学号查询成绩\n\n```sql\nDELIMITER $$\n\nCREATE PROCEDURE p_query_score(IN p_student_no CHAR(8))\nBEGIN\n  SELECT\n    s.student_no,\n    s.student_name,\n    c.course_name,\n    sc.score\n  FROM student AS s\n  INNER JOIN score AS sc ON s.student_id = sc.student_id\n  INNER JOIN course AS c ON sc.course_id = c.course_id\n  WHERE s.student_no = p_student_no;\nEND$$\n\nDELIMITER ;\n\nCALL p_query_score('20260001');\n```\n\n### 练习二：使用输出参数返回平均分\n\n```sql\nDELIMITER $$\n\nCREATE PROCEDURE p_student_average(\n  IN p_student_id INT,\n  OUT p_average DECIMAL(5,2)\n)\nBEGIN\n  SELECT AVG(score)\n  INTO p_average\n  FROM score\n  WHERE student_id = p_student_id;\nEND$$\n\nDELIMITER ;\n\nCALL p_student_average(1, @result);\nSELECT @result;\n```\n\n### 自测题\n\n1. 创建过程 `p_course_statistics`，传入课程编号，返回最高分、最低分和平均分。\n2. 查看当前数据库的存储过程。\n3. 删除三个练习过程。\n\n\n\n### 易错点\n\n- `DECLARE` 必须写在 `BEGIN` 后面、其他可执行语句前面。\n- `IN` 是输入参数，`OUT` 是输出参数，`INOUT` 既输入又输出。\n- 输出参数调用时通常使用用户变量，例如 `@result`。\n- `ALTER PROCEDURE` 不能直接重写过程主体。修改主体通常采用 `DROP PROCEDURE` 后重新 `CREATE PROCEDURE`。\n\n---\n\n\n## 13. 存储函数练习\n\n\n### 过程与函数的区别\n\n| 项目 | 存储过程 | 存储函数 |\n|---|---|---|\n| 调用方式 | `CALL 过程名(...)` | 可放入 `SELECT` 或表达式中调用 |\n| 返回结果 | 可以有多个输出参数或结果集 | 必须通过 `RETURN` 返回一个值 |\n| 主要用途 | 完成一组业务操作 | 计算并返回一个值 |\n\n### 创建计算学生平均分的函数\n\n```sql\nDELIMITER $$\n\nCREATE FUNCTION f_student_average(p_student_id INT)\nRETURNS DECIMAL(5,2)\nREADS SQL DATA\nBEGIN\n  DECLARE v_average DECIMAL(5,2);\n\n  SELECT AVG(score)\n  INTO v_average\n  FROM score\n  WHERE student_id = p_student_id;\n\n  RETURN v_average;\nEND$$\n\nDELIMITER ;\n```\n\n调用和删除：\n\n```sql\nSELECT f_student_average(1);\n\nSELECT\n  student_name,\n  f_student_average(student_id) AS avg_score\nFROM student;\n\nSHOW FUNCTION STATUS\nWHERE Db = 'exam_practice';\n\nDROP FUNCTION IF EXISTS f_student_average;\n```\n\n如果创建函数时遇到与二进制日志相关的权限报错，可由管理员根据练习环境执行：\n\n```sql\nSET GLOBAL log_bin_trust_function_creators = 1;\n```\n\n考试时不要随意修改全局配置；先按题目和考场权限操作。\n\n---\n\n\n## 14. 事件练习\n\n\n### 必背命令框架\n\n```sql\nSET GLOBAL event_scheduler = ON;\nSHOW VARIABLES LIKE 'event_scheduler';\n\nCREATE EVENT 事件名\nON SCHEDULE EVERY 1 DAY\nDO\n  SQL语句;\n\nALTER EVENT 事件名 DISABLE;\nALTER EVENT 事件名 ENABLE;\nDROP EVENT 事件名;\n```\n\n### 创建定期清理日志的事件\n\n```sql\nCREATE EVENT ev_clear_old_log\nON SCHEDULE EVERY 1 DAY\nSTARTS CURRENT_TIMESTAMP\nDO\n  DELETE FROM operation_log\n  WHERE action_time < DATE_SUB(NOW(), INTERVAL 30 DAY);\n```\n\n查看、修改和删除：\n\n```sql\nSHOW EVENTS FROM exam_practice;\nALTER EVENT ev_clear_old_log DISABLE;\nALTER EVENT ev_clear_old_log ENABLE;\nDROP EVENT IF EXISTS ev_clear_old_log;\n```\n\n### 概念速记\n\n- 事件是由 MySQL 服务器按时间自动执行的任务。\n- 创建事件不等于事件一定会运行，事件调度器必须开启。\n- 事件适合定期清理、汇总或备份辅助任务。\n\n---\n",
+      "exercises": [
+        {
+          "itemId": "f8d31475-5720-586e-90bf-11982582f923",
+          "exampleId": "37d04aa1-12c1-52dc-91e9-5a69f300b2d7"
+        },
+        {
+          "itemId": "70e24227-bde9-5929-b391-269938d16033",
+          "exampleId": "37d04aa1-12c1-52dc-91e9-5a69f300b2d7"
+        },
+        {
+          "itemId": "dedd0c3d-affe-5db4-baa1-3d6cd6108532",
+          "exampleId": "37d04aa1-12c1-52dc-91e9-5a69f300b2d7"
+        },
+        {
+          "itemId": "266a0a65-f13a-52c0-a743-580bd213d25a",
+          "exampleId": "37d04aa1-12c1-52dc-91e9-5a69f300b2d7"
+        },
+        {
+          "itemId": "9b987dc3-2225-5d91-afaf-144f0b8ddcf7",
+          "exampleId": "b8956f52-71ae-5332-bc1c-3c075ee716c6"
+        },
+        {
+          "itemId": "a6add954-f401-5ad8-b8bb-d7345a2fe1ee",
+          "exampleId": "b8956f52-71ae-5332-bc1c-3c075ee716c6"
+        },
+        {
+          "itemId": "83bb6145-8f34-58fc-afc7-bbf25d49414c",
+          "exampleId": "b8956f52-71ae-5332-bc1c-3c075ee716c6"
+        },
+        {
+          "itemId": "e6651231-ddeb-5e3d-ae77-4a3ac24b9b18",
+          "exampleId": "b8956f52-71ae-5332-bc1c-3c075ee716c6"
+        },
+        {
+          "itemId": "20c79d83-9858-5be8-98d9-0cf8e7a8e904",
+          "exampleId": "b8956f52-71ae-5332-bc1c-3c075ee716c6"
+        },
+        {
+          "itemId": "814c01e9-a0a3-5823-ac27-7862ba10a57e",
+          "exampleId": "b8956f52-71ae-5332-bc1c-3c075ee716c6"
+        },
+        {
+          "itemId": "c446cfbc-9227-50b4-95ef-f7e2d0f45b51",
+          "exampleId": "010b8497-5a29-593a-9f44-9f39bca4aab8"
+        },
+        {
+          "itemId": "dbd058bc-6247-53c3-947a-2762defbbae6",
+          "exampleId": "010b8497-5a29-593a-9f44-9f39bca4aab8"
+        },
+        {
+          "itemId": "1ba02121-9619-5768-b371-8b19b0e6b596",
+          "exampleId": "010b8497-5a29-593a-9f44-9f39bca4aab8"
+        },
+        {
+          "itemId": "cfbb3391-1052-5133-9096-7c148d5c9635",
+          "exampleId": "dcb4962f-6036-53b1-b6ab-618255b6444d"
+        },
+        {
+          "itemId": "4663192c-cd6b-5d2f-bf41-5624d9e439a0",
+          "exampleId": "dcb4962f-6036-53b1-b6ab-618255b6444d"
+        },
+        {
+          "itemId": "dc073d4c-7d5c-5cd2-bcc0-b74e1d8114ea",
+          "exampleId": "dcb4962f-6036-53b1-b6ab-618255b6444d"
+        }
+      ]
+    },
+    {
+      "chapterId": "ed95b014-280f-5c36-b010-01538a11b7ff",
+      "title": "实践手册练习 · 第四部分：模拟与考前检查",
+      "markdown": "\n\n## 15. MySQL 服务和客户端管理\n\n\n### Windows 常见操作\n\n以管理员身份打开命令提示符：\n\n```bat\nnet start MySQL\nnet stop MySQL\n```\n\n实际服务名可能是 `MySQL57`、`MySQL80` 或安装时设置的其他名称，可以在 Windows“服务”中查看。\n\n登录客户端：\n\n```bat\nmysql -u root -p\nmysql -h localhost -P 3306 -u root -p\n```\n\n退出：\n\n```sql\nEXIT;\n```\n\n常见客户端包括：\n\n- MySQL 命令行客户端。\n- MySQL Workbench。\n- 课程或考场指定的图形化管理工具。\n\n过关标准：图形界面不会用时，也能通过命令行登录并执行 SQL。\n\n---\n\n\n## 16. 用户和权限管理\n\n\n以下操作通常需要管理员权限。\n\n### 创建、修改和删除用户\n\n兼容较老版本的常用写法：\n\n```sql\nCREATE USER 'exam_user'@'localhost'\nIDENTIFIED BY 'Exam123!';\n\nRENAME USER 'exam_user'@'localhost'\nTO 'practice_user'@'localhost';\n\nSET PASSWORD FOR 'practice_user'@'localhost'\n= PASSWORD('NewExam123!');\n\nDROP USER 'practice_user'@'localhost';\n```\n\nMySQL 5.7/8.0 常用的修改密码写法：\n\n```sql\nALTER USER 'practice_user'@'localhost'\nIDENTIFIED BY 'NewExam123!';\n```\n\n> MySQL 8.0 已不推荐或不支持部分旧密码写法。考试以考场安装版本为准，练习时先执行 `SELECT VERSION();` 查看版本。\n\n### 授权、查看和撤销\n\n```sql\nCREATE USER 'exam_user'@'localhost'\nIDENTIFIED BY 'Exam123!';\n\nGRANT SELECT, INSERT, UPDATE\nON exam_practice.*\nTO 'exam_user'@'localhost';\n\nSHOW GRANTS FOR 'exam_user'@'localhost';\n\nREVOKE INSERT, UPDATE\nON exam_practice.*\nFROM 'exam_user'@'localhost';\n\nSHOW GRANTS FOR 'exam_user'@'localhost';\n\nDROP USER 'exam_user'@'localhost';\n```\n\n### 概念速记\n\n- 用户通常由“用户名 + 主机”共同确定。\n- `'user'@'localhost'` 和 `'user'@'%'` 是不同账户。\n- `GRANT` 授权，`REVOKE` 撤销权限，`SHOW GRANTS` 查看权限。\n- 遵循最小权限原则：只授予完成任务所需要的权限。\n\n---\n\n\n## 17. 备份、恢复和二进制日志\n\n\n### 使用 mysqldump 备份\n\n以下命令在 Windows 命令提示符或终端执行，不是在 `mysql>` 提示符内执行。\n\n备份整个数据库：\n\n```bat\nmysqldump -u root -p exam_practice > exam_practice.sql\n```\n\n只备份表结构：\n\n```bat\nmysqldump -u root -p --no-data exam_practice > exam_structure.sql\n```\n\n备份指定表：\n\n```bat\nmysqldump -u root -p exam_practice student score > selected_tables.sql\n```\n\n### 恢复数据库\n\n先登录 MySQL 创建目标数据库：\n\n```sql\nCREATE DATABASE exam_restore DEFAULT CHARACTER SET utf8;\n```\n\n退出 MySQL 后，在命令提示符执行：\n\n```bat\nmysql -u root -p exam_restore < exam_practice.sql\n```\n\n恢复后验证：\n\n```sql\nUSE exam_restore;\nSHOW TABLES;\nSELECT COUNT(*) FROM student;\n```\n\n### 二进制日志\n\n作用：记录会改变数据的操作，可用于增量恢复、时间点恢复和复制。\n\n常用查看命令：\n\n```sql\nSHOW VARIABLES LIKE 'log_bin';\nSHOW BINARY LOGS;\nSHOW MASTER STATUS;\n```\n\n在命令行解析日志：\n\n```bat\nmysqlbinlog mysql-bin.000001\n```\n\n启用二进制日志通常需要在 MySQL 配置文件的 `[mysqld]` 部分配置并重启服务，例如：\n\n```ini\n[mysqld]\nlog-bin=mysql-bin\nserver-id=1\n```\n\n考试过关重点：知道二进制日志的作用，会检查是否启用、查看日志列表，并知道需要使用 `mysqlbinlog` 工具读取。\n\n---\n\n\n## 18. 60 分钟模拟考试\n\n\n### 考试规则\n\n- 时间：60 分钟。\n- 全程闭卷，不查本练习册。\n- 新建数据库完成，不使用已经准备好的表。\n- 每完成一题立即执行 SQL 验证。\n- 建议用时：基础操作 35 分钟，编程与管理 15 分钟，检查 10 分钟。\n\n### 模拟题\n\n#### 一、数据库与表\n\n1. 创建数据库 `mock_exam`，字符集为 `utf8`，并选择该数据库。\n2. 创建部门表 `department`：部门编号为主键，部门名称非空且唯一。\n3. 创建员工表 `employee`，至少包含：\n   - 员工编号：主键、自增。\n   - 员工姓名：非空。\n   - 性别：默认男。\n   - 工资：小数。\n   - 入职日期：日期。\n   - 部门编号：外键。\n4. 插入 3 个部门和至少 6 名员工。\n5. 给员工表添加电话字段，然后把它修改为 `VARCHAR(30)`。\n6. 复制员工表结构为 `employee_backup`。\n\n#### 二、数据操作和查询\n\n7. 把工资低于 5000 的员工工资增加 500。\n8. 查询工资在 5000～8000 之间的员工，按工资降序排列。\n9. 查询每个部门的人数、最高工资和平均工资。\n10. 查询平均工资大于 6000 的部门。\n11. 使用连接查询员工姓名、部门名称和工资。\n12. 查询工资高于全体员工平均工资的员工。\n13. 查询没有员工的部门。\n14. 使用 `UNION` 合并两个指定部门的员工姓名。\n\n#### 三、索引、视图与编程\n\n15. 在员工姓名上创建索引并查看索引。\n16. 创建员工信息视图，显示员工姓名、部门名称和工资。\n17. 创建存储过程，根据部门编号查询该部门全部员工。\n18. 创建一个员工工资修改后记录日志的触发器。\n\n#### 四、管理维护口答或操作\n\n19. 写出创建用户并授予 `mock_exam` 查询权限的 SQL。\n20. 写出备份 `mock_exam` 和恢复到 `mock_restore` 的命令。\n\n### 模拟考试评分\n\n每题 5 分，总分 100 分：\n\n- 60～69：勉强过关，需要继续练习错题。\n- 70～79：基本稳定，可以参加考试。\n- 80～89：通过概率较高。\n- 90～100：操作熟练。\n\n本评分只是自测标准，不代表学校官方评分方式。\n\n\n\n---\n\n\n## 19. 考前必背速查表\n\n\n考前应做到不看资料写出下面框架：\n\n```sql\nCREATE DATABASE db_name DEFAULT CHARACTER SET utf8;\nUSE db_name;\nSHOW DATABASES;\nSHOW TABLES;\nDESC table_name;\nSHOW CREATE TABLE table_name;\n\nCREATE TABLE table_name (\n  id INT PRIMARY KEY AUTO_INCREMENT,\n  name VARCHAR(50) NOT NULL,\n  other_id INT,\n  CONSTRAINT fk_name FOREIGN KEY (other_id)\n    REFERENCES other_table(id)\n) ENGINE=InnoDB;\n\nALTER TABLE table_name ADD COLUMN column_name VARCHAR(50);\nALTER TABLE table_name MODIFY COLUMN column_name VARCHAR(100);\nALTER TABLE table_name DROP COLUMN column_name;\n\nINSERT INTO table_name(column1, column2) VALUES(value1, value2);\nUPDATE table_name SET column1 = value1 WHERE id = 1;\nDELETE FROM table_name WHERE id = 1;\n\nSELECT ...\nFROM ...\nINNER JOIN ... ON ...\nWHERE ...\nGROUP BY ...\nHAVING ...\nORDER BY ...;\n\nCREATE INDEX index_name ON table_name(column_name);\nSHOW INDEX FROM table_name;\nDROP INDEX index_name ON table_name;\n\nCREATE VIEW view_name AS SELECT ...;\nSHOW CREATE VIEW view_name;\nDROP VIEW view_name;\n\nDELIMITER $$\nCREATE PROCEDURE procedure_name(IN p_id INT)\nBEGIN\n  SELECT * FROM table_name WHERE id = p_id;\nEND$$\nDELIMITER ;\n\nCALL procedure_name(1);\nDROP PROCEDURE procedure_name;\n\nDELIMITER $$\nCREATE FUNCTION function_name(p_id INT)\nRETURNS DECIMAL(10,2)\nREADS SQL DATA\nBEGIN\n  DECLARE v_result DECIMAL(10,2);\n  SELECT AVG(value_column) INTO v_result\n  FROM table_name WHERE id = p_id;\n  RETURN v_result;\nEND$$\nDELIMITER ;\n\nDELIMITER $$\nCREATE TRIGGER trigger_name\nAFTER UPDATE ON table_name\nFOR EACH ROW\nBEGIN\n  INSERT INTO log_table(detail) VALUES('发生修改');\nEND$$\nDELIMITER ;\n\nCREATE EVENT event_name\nON SCHEDULE EVERY 1 DAY\nDO DELETE FROM log_table\nWHERE action_time < DATE_SUB(NOW(), INTERVAL 30 DAY);\n\nCREATE USER 'user_name'@'localhost' IDENTIFIED BY 'password';\nGRANT SELECT ON db_name.* TO 'user_name'@'localhost';\nSHOW GRANTS FOR 'user_name'@'localhost';\nREVOKE SELECT ON db_name.* FROM 'user_name'@'localhost';\nDROP USER 'user_name'@'localhost';\n```\n\n命令提示符：\n\n```bat\nmysqldump -u root -p db_name > backup.sql\nmysql -u root -p db_name < backup.sql\n```\n\n---\n\n\n## 20. 正式考试时间分配\n\n\n| 时间 | 操作 |\n|---|---|\n| 0～5 分钟 | 通读题目，确认数据库名、表名和字段要求 |\n| 5～20 分钟 | 完成数据库、数据表、约束及测试数据 |\n| 20～40 分钟 | 完成增删改查，优先做会做的查询 |\n| 40～50 分钟 | 完成索引、视图、触发器或存储过程 |\n| 50～60 分钟 | 使用 `SHOW`、`DESC`、`SELECT` 检查结果并提交 |\n\n### 考场操作原则\n\n1. 第一条先执行 `USE 数据库名;`。\n2. 表名和字段名完全按照题目，不自行改名。\n3. 每写完一条 SQL 就执行，不要最后一次性执行全部脚本。\n4. 报错先检查英文标点、逗号、括号、引号和分号。\n5. `UPDATE`、`DELETE` 前先用 `SELECT` 验证条件。\n6. 复杂题卡住超过 3 分钟，先跳过做下一题。\n7. 最后一定检查数据库、表、视图、过程和触发器是否真实存在。\n\n---\n\n\n## 21. 错题记录表\n\n\n| 日期 | 题目/命令 | 报错或错误现象 | 正确写法 | 是否已重做 |\n|---|---|---|---|---|\n|  |  |  |  |  |\n|  |  |  |  |  |\n|  |  |  |  |  |\n|  |  |  |  |  |\n|  |  |  |  |  |\n\n\n## 22. 最终过关检查\n\n\n考前逐项打勾：\n\n- [ ] 能在 20 分钟内完成建库、建表、约束和测试数据。\n- [ ] 能正确完成数据插入、修改和删除。\n- [ ] 能独立写出条件、聚合、连接、子查询和联合查询。\n- [ ] 能创建、查看和删除索引。\n- [ ] 能创建、查询、修改和删除视图。\n- [ ] 能创建、验证和删除触发器。\n- [ ] 能创建、调用和删除存储过程及存储函数。\n- [ ] 能创建、启用、停用和删除事件。\n- [ ] 能创建用户、授权、查看权限和撤销权限。\n- [ ] 能写出数据库备份与恢复命令。\n- [ ] 知道二进制日志的作用和基本查看命令。\n- [ ] 已经闭卷完成至少两次 60 分钟模拟考试。\n\n连续两次模拟达到 80 分左右，并且基础 SQL 大部分能一次执行成功，就已经具备比较稳妥的应试能力。\n",
+      "exercises": [
+        {
+          "itemId": "746bff17-a846-5830-aa9e-16a3758b8bae",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "5801e6de-4980-57d0-af39-3216587b5c83",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "ac006372-e1cd-5cfc-9042-72d4b3b6b8cb",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "13ef3005-63c7-5ffd-8d99-26ba5fb51d10",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "f359d908-2d5f-58e0-8161-eed8c62264f7",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "757c5049-fe9c-54a1-a351-35f750639ea4",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "dc2b6e86-9b12-5acc-aa11-f325594f4cb6",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "283059fb-18e0-5f00-80bb-6c1ade662395",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "85367949-9aa6-5883-a70f-4c9e5f9c61a0",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "536c0ed8-7fb0-58e3-b34c-53aa7f6c26a4",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "cb9249f0-1974-504a-b019-5f8d401e5112",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "1964229e-4ed4-51a9-8d1f-d2c1a81aab6a",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "bcae3480-e715-568a-a359-0e3d92ec85e8",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "7d29e043-ca1f-5e64-9715-4cb01b926cb0",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "d3dc9324-fcc1-54d1-b8d5-5ccf7c31a6d9",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "9e50ee89-fe2d-54e9-b8b6-1bd49042058a",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "1517d022-f75e-5a1c-960a-c423fb874dc7",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "1670cac0-9e98-5b9c-9809-1c7b33452876",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "77d1d089-4ae4-5247-b293-2dbac44c2017",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "b3030e62-a9d8-50ab-b99e-82eaa3228360",
+          "exampleId": "5152e6a3-226b-5383-b2c8-acce37907f70"
+        },
+        {
+          "itemId": "48b98cd3-f8b8-5754-8949-21df910105bb",
+          "exampleId": null
+        },
+        {
+          "itemId": "192098d1-4f61-506e-9239-ac87d7bad15f",
+          "exampleId": null
+        },
+        {
+          "itemId": "971c17ec-9298-5614-aa4e-20fd4e7fbe1d",
+          "exampleId": null
+        },
+        {
+          "itemId": "796fbfc6-c622-50af-9682-0012ec6877ee",
+          "exampleId": null
+        },
+        {
+          "itemId": "173713b2-4c2e-5d74-9b4e-306dd7ed8de4",
+          "exampleId": null
+        },
+        {
+          "itemId": "40ea0bf1-d3fa-5d9a-a098-eb77366b9ff2",
+          "exampleId": null
+        },
+        {
+          "itemId": "c5b2022c-d53e-502b-8fd6-57683b497ab6",
+          "exampleId": null
+        },
+        {
+          "itemId": "34f605c6-6b1c-5f87-ae68-826dbdaba808",
+          "exampleId": null
+        },
+        {
+          "itemId": "beea9a86-f636-5b7d-b8c2-f6acff72f025",
+          "exampleId": null
+        },
+        {
+          "itemId": "a4302372-947d-5842-922f-d164d607fc65",
+          "exampleId": null
+        },
+        {
+          "itemId": "b425a0a7-f65f-5a2f-858e-be8ceeaee74b",
+          "exampleId": null
+        },
+        {
+          "itemId": "e40a428d-fe2e-5fc3-b372-a4b4d2594e4c",
+          "exampleId": null
+        }
+      ]
+    }
+  ]
+}
