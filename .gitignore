@@ -1,2 +1,9 @@
 # 项目排除路径
 /target/
+/data/
+/.idea/
+.env
+.env.*
+!.env.example
+*.log
+/deploy/backups/

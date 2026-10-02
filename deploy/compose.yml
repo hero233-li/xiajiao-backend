@@ -1,0 +1,35 @@
+name: xiajiao
+services:
+  backend:
+    build:
+      context: ..
+    image: xiajiao-backend:local
+    container_name: xiajiao-backend
+    restart: unless-stopped
+    init: true
+    mem_limit: 768m
+    env_file: .env
+    environment:
+      SERVER_PORT: "8080"
+      APP_FILES_ROOT: /data/private
+      APP_BOOTSTRAP_ENABLED: "false"
+      APP_AUTH_REGISTRATION_MODE: DISABLED
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError
+    volumes:
+      - ../data/private:/data/private
+    networks:
+      app:
+        aliases: [backend]
+      database: {}
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+networks:
+  app:
+    external: true
+    name: xiajiao-network
+  database:
+    external: true
+    name: 1panel-network
