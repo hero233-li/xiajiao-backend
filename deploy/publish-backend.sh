@@ -59,10 +59,20 @@ wait_healthy() {
 }
 
 echo '正在读取 GitHub main 分支……'
+git_retry() {
+    for attempt in 1 2 3; do
+        if git -c http.version=HTTP/1.1 "$@"; then return 0; fi
+        if (( attempt < 3 )); then
+            echo "GitHub 连接失败，5 秒后重试（$attempt/3）……"
+            sleep 5
+        fi
+    done
+    return 1
+}
 if [[ ! -d "$state/backend.git" ]]; then
-    git clone --bare "$repository" "$state/backend.git"
+    git_retry clone --bare "$repository" "$state/backend.git"
 fi
-git --git-dir="$state/backend.git" fetch --prune origin '+refs/heads/main:refs/heads/main'
+git_retry --git-dir="$state/backend.git" fetch --prune origin '+refs/heads/main:refs/heads/main'
 revision=$(git --git-dir="$state/backend.git" rev-parse main)
 echo "目标版本：$revision"
 docker network inspect xiajiao-network >/dev/null
@@ -117,6 +127,8 @@ finish() {
     exit "$rc"
 }
 trap finish EXIT
+trap 'exit 143' TERM
+trap 'exit 130' INT
 echo '开始备份数据库和附件，后端将短暂停止……'
 paused=1
 docker stop --time=30 xiajiao-backend >/dev/null
