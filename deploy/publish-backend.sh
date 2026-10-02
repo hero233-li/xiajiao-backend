@@ -23,7 +23,6 @@ config="$root/deploy/.env"
 mkdir -p "$state" "$state/releases" "$root/deploy/backups"
 exec 9>"$state/backend.lock"
 flock -n 9 || { echo '已有发布任务正在执行，请等待它完成。'; exit 1; }
-export GIT_TERMINAL_PROMPT=0
 [[ -s "$config" && -s "$compose" ]] || { echo '缺少服务器运行配置。'; exit 1; }
 
 compose_run() { docker compose --env-file "$config" -f "$compose" "$@"; }
@@ -58,22 +57,19 @@ wait_healthy() {
     return 1
 }
 
-echo '正在读取 GitHub main 分支……'
-git_retry() {
-    for attempt in 1 2 3; do
-        if git -c http.version=HTTP/1.1 -c http.lowSpeedLimit=100 -c http.lowSpeedTime=30 "$@"; then return 0; fi
-        if (( attempt < 3 )); then
-            echo "GitHub 连接失败，5 秒后重试（$attempt/3）……"
-            sleep 5
-        fi
-    done
-    return 1
-}
-if [[ ! -d "$state/backend.git" ]]; then
-    git_retry clone --bare "$repository" "$state/backend.git"
-fi
-git_retry --git-dir="$state/backend.git" fetch --prune origin '+refs/heads/main:refs/heads/main'
-revision=$(git --git-dir="$state/backend.git" rev-parse main)
+echo '正在通过 GitHub API 读取后端 main 最新版本……'
+curl --fail --silent --show-error --connect-timeout 10 --max-time 30 \
+    --retry 2 --retry-delay 3 --retry-max-time 100 \
+    -H 'Accept: application/vnd.github+json' \
+    https://api.github.com/repos/hero233-li/xiajiao-backend/commits/main > "$state/backend-main.json"
+revision=$(python3 - "$state/backend-main.json" <<'PY'
+import json,re,sys
+sha=json.load(open(sys.argv[1])).get('sha','')
+if not re.fullmatch('[0-9a-f]{40}',sha):
+    sys.exit('无法读取最新提交版本，发布已停止。')
+print(sha)
+PY
+)
 echo "目标版本：$revision"
 docker network inspect xiajiao-network >/dev/null
 docker network inspect 1panel-network >/dev/null
@@ -88,7 +84,13 @@ fi
 stamp=$(date -u +%Y%m%dT%H%M%SZ)
 release="$state/releases/$stamp-${revision:0:12}"
 mkdir "$release"
-git --git-dir="$state/backend.git" archive "$revision" | tar -x -C "$release"
+echo '正在下载 GitHub 官方源码包，现有服务继续运行……'
+curl --location --fail --silent --show-error --connect-timeout 10 --max-time 180 \
+    --retry 2 --retry-delay 3 --retry-max-time 560 \
+    "https://codeload.github.com/hero233-li/xiajiao-backend/tar.gz/$revision" \
+    -o "$release/.source.tar.gz"
+tar -xzf "$release/.source.tar.gz" --strip-components=1 -C "$release"
+rm -f -- "$release/.source.tar.gz"
 image="xiajiao-backend:git-${revision:0:12}"
 old_image_id=$(docker inspect xiajiao-backend --format '{{.Image}}')
 old_image="xiajiao-backend:rollback-$stamp"

@@ -23,6 +23,8 @@ docker network connect xiajiao-network xiajiao-frontend
 
 服务器已安装 `/opt/projects/xiajao/deploy.sh`，源码从 GitHub 后端仓库的 `main` 分支拉取到独立发布目录。服务器无需安装 Java 或 Maven，构建在 Docker 中使用 Java 17 完成。发布前先在本地提交并推送代码。
 
+源码获取使用 GitHub 官方 API 查询最新提交号，再从官方源码下载服务下载该提交的源码包，避开服务器不稳定的 Git HTTPS 连接。版本查询超时 30 秒、源码下载超时 180 秒，并有有限重试；未完整下载时不停止现有后端。当前适用于公开仓库。
+
 在 Mac 执行：
 
 ```sh
