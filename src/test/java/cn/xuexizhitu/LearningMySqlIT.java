@@ -81,7 +81,7 @@ class LearningMySqlIT {
         mvc.perform(get("/api/v1/courses").param("cycleId",CYCLE)).andExpect(status().isUnauthorized());
     }
     @Test void completionPersistsRejectsStaleVersionAndIsolatesUsers() throws Exception {
-        String item=items().getFirst();JsonNode result=read(put(completionUrl(item)).contentType("application/json").content(command(true,0)));
+        String item=items().get(0);JsonNode result=read(put(completionUrl(item)).contentType("application/json").content(command(true,0)));
         assertThat(result.path("item").path("revision").asInt()).isEqualTo(1);
         assertThat(result.path("item").path("completedAt").asText()).endsWith("Z");
         assertThat(catalog().path("courseProgress").path("completedItems").asInt()).isEqualTo(1);
@@ -93,7 +93,7 @@ class LearningMySqlIT {
         mvc.perform(as(user,put("/api/v1/catalog/courses/"+OTHER+"/items/"+item+"/completion").contentType("application/json").content(command(true,2)))).andExpect(status().isNotFound());
     }
     @Test void concurrentInitialCompletionOnlyAcceptsOneWriter() throws Exception {
-        String item=items().getFirst();ExecutorService pool=Executors.newFixedThreadPool(2);CountDownLatch start=new CountDownLatch(1);
+        String item=items().get(0);ExecutorService pool=Executors.newFixedThreadPool(2);CountDownLatch start=new CountDownLatch(1);
         try {
             Callable<Integer> call=()->{start.await();return mvc.perform(as(user,put(completionUrl(item)).contentType("application/json").content(command(true,0)))).andReturn().getResponse().getStatus();};
             Future<Integer> a=pool.submit(call),b=pool.submit(call);start.countDown();
@@ -136,7 +136,7 @@ class LearningMySqlIT {
         mvc.perform(as(user,put(url).contentType("application/json").content(body.replace(chapter,chapters.get(1).path("id").asText())))).andExpect(status().isUnprocessableEntity());
     }
     @Test void completionSynchronizesOnlyOwnedPlanTasks() throws Exception {
-        String item=items().getFirst(),release=catalog().path("releaseId").asText();UserDto another=newUser();String own=plan(user,item,release),foreign=plan(another,item,release);
+        String item=items().get(0),release=catalog().path("releaseId").asText();UserDto another=newUser();String own=plan(user,item,release),foreign=plan(another,item,release);
         JsonNode result=read(put(completionUrl(item)).contentType("application/json").content(command(true,0)));
         assertThat(result.path("affectedPlanIds").toString()).contains(own).doesNotContain(foreign);
         assertThat(jdbc.queryForObject("SELECT completed FROM plan_task WHERE plan_id=?",Boolean.class,own)).isTrue();

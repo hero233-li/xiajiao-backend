@@ -2,7 +2,7 @@
 
 已补齐现有OpenAPI约定的业务后端：课程与报考、目录进度、知识与手册、备注、练习与检测、真题与成绩、预测趋势、学习计划与顺延、首页聚合、内容草稿发布、管理审核及旧记录归档。完整范围和验证见[后端业务收尾记录](../docs/阶段10_业务后端收尾.md)。此前四批记录保留在阶段6至9文档中。
 
-使用Java21、Spring Boot3.5.16、Maven、Spring Security、MySQL8.4、Flyway和springdoc。JUnit5、MockMvc与独立Testcontainers数据库用于验证。真实试卷、题目原创资格和模拟权重需要管理员录入审核；功能实现不会自动放行未经审核的数据。
+使用Java17、Spring Boot3.5.16、Maven、Spring Security、MySQL8.4、Flyway和springdoc。JUnit5、MockMvc与独立Testcontainers数据库用于验证。真实试卷、题目原创资格和模拟权重需要管理员录入审核；功能实现不会自动放行未经审核的数据。
 
 ## 结构
 
@@ -43,17 +43,17 @@ openssl rand -base64 32
 
 初始化密码至少8个字符，UTF-8总长度不超过72字节。首次启动保留APP_BOOTSTRAP_ENABLED=true，填写本人的用户名/邮箱。注册范围待确认，APP_AUTH_REGISTRATION_MODE保持DISABLED。
 
-准备Java21，并把JAVA_HOME设为该JDK根目录（包含bin/java）；当前机器默认Java17，不能直接构建。检查：
+准备Java17，并把JAVA_HOME设为该JDK根目录（包含bin/java）；当前机器默认Java17，可直接构建。检查：
 
 ```bash
 java -version
 mvn -version
 ```
 
-两者应使用Java21。本次验证下载的临时JDK仍在本机时，可直接设置（正式使用可换为你自己的Java21安装路径）：
+两者应使用Java17。当前机器可直接使用已有JDK（其他机器换为自己的Java17安装路径）：
 
 ```bash
-export JAVA_HOME="/private/tmp/xiajiao-jdk21/amazon-corretto-21.jdk/Contents/Home"
+export JAVA_HOME="/Users/huagu/IDEA/Environment/sdkman/candidates/java/17.0.16-amzn"
 export PATH="$JAVA_HOME/bin:$PATH"
 ```
 
@@ -82,7 +82,7 @@ docker compose down
 
 ## 打包运行
 
-保持上面的Java21及环境变量：
+保持上面的Java17及环境变量：
 
 ```bash
 cd backend
@@ -151,7 +151,7 @@ mvn -Pmysql-it verify
 
 Testcontainers自动创建独立MySQL8.4并清理，测试配置不连接compose数据库，也不会读取真实账号密码。包括54表/Flyway版本/CHECK约束、用户名与邮箱登录、命名空间冲突回滚、刷新重放、旧访问令牌失效、刷新类型隔离、退出撤销、默认关闭注册与健康检查。基础测试另覆盖统一错误、参数校验/未知字段拒绝、JWT过期/issuer/audience/签名、注册模式角色约束及UTF-8密码长度。
 
-当前后端71项测试通过（23项基础/算法测试、48项真实MySQL集成测试）；98个业务操作全部有真实响应样本并通过OpenAPI校验。前端176项测试及构建通过。此前前端单元测试使用Mock；现已另用repo/frontend完成真实浏览器联调，详见[前后端联调记录](../docs/阶段11_前后端真实联调.md)，仍未生产部署。验证细节见阶段10文档。
+2026年10月2日切换Java17后，使用本机JDK17.0.16执行`mvn -Pmysql-it clean verify`，71项测试全部通过且无跳过（23项基础/算法测试、48项真实MySQL集成测试）；98个业务操作全部有真实响应样本并通过OpenAPI校验。前端176项测试及构建通过。此前前端单元测试使用Mock；现已另用repo/frontend完成真实浏览器联调，详见[前后端联调记录](../docs/阶段11_前后端真实联调.md)，仍未生产部署。验证细节见阶段10文档。
 
 接口响应和请求结构快照检查（从仓库根目录运行，使用当前前端已有依赖）：
 
@@ -164,4 +164,4 @@ node backend/scripts/generate-business-schemas.cjs ../../frontend/node_modules -
 
 ## 版本依据
 
-采用Spring Boot3的3.5系列；[官方环境要求](https://docs.spring.io/spring-boot/3.5/system-requirements.html)支持本工程Java21/Maven环境。[springdoc官方兼容表](https://springdoc.org/v2/faq.html)对应3.5.x使用2.8.x。持久化选择沿用阶段2建议JPA，依赖其余版本由Spring Boot BOM管理。
+采用Spring Boot3的3.5系列；[官方环境要求](https://docs.spring.io/spring-boot/3.5/system-requirements.html)支持本工程Java17/Maven环境。[springdoc官方兼容表](https://springdoc.org/v2/faq.html)对应3.5.x使用2.8.x。持久化选择沿用阶段2建议JPA，依赖其余版本由Spring Boot BOM管理。

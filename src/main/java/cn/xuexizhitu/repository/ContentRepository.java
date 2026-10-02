@@ -65,7 +65,7 @@ public class ContentRepository {
             if(requested!=null&&!id.equals(requested))continue;
             List<FileRow> files=jdbc.query("SELECT * FROM stored_file WHERE id=? AND purpose='MANUAL' AND state='ACTIVE' AND owner_id IS NULL AND contains_answers=false",
                 (r,n)->new FileRow(id,r.getString("storage_key"),r.getString("original_name"),r.getString("mime_type"),r.getLong("size_bytes"),r.getString("sha256")),id);
-            if(!files.isEmpty())return files.getFirst();
+            if(!files.isEmpty())return files.get(0);
         }
         throw new BusinessException(ErrorCode.NOT_FOUND,"当前发布课程没有可用手册");
     }
