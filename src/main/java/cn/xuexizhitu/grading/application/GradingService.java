@@ -26,6 +26,7 @@ import java.util.*;
     private final ExamRepository exams;
     private final PrivateFileStore files;
     private final JdbcTemplate jdbc;
+    private final cn.xuexizhitu.learning.infrastructure.LearningRepository learning;
     public static String hash(String value) {
         try {
             return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));
@@ -92,7 +93,8 @@ import java.util.*;
         return repo.submission(user,id,false);
     }
     public List<Rubric> rubrics(String course,String cycle,String paper) {
-        access.requireWrite(user(),course,cycle);
+        if(CurrentUser.require().role()==cn.xuexizhitu.identity.domain.Role.ADMIN) learning.requireCycleCourse(course,cycle);
+        else access.requireWrite(user(),course,cycle);
         exams.paper(course,paper);
         return repo.rubrics(paper).stream().filter(r->r.state().equals("PUBLISHED")||CurrentUser.require().role()==cn.xuexizhitu.identity.domain.Role.ADMIN).toList();
     }

@@ -135,7 +135,7 @@ import java.time.*;
     }
     public cn.xuexizhitu.learning.api.LearningDtos.Page<ContentRelease> releases(String course,int page,int size) {
         require(jdbc.queryForObject("SELECT COUNT(*) FROM course WHERE id=?",Integer.class,course)>0,ErrorCode.NOT_FOUND,"课程不存在");
-        return new cn.xuexizhitu.learning.api.LearningDtos.Page<>(jdbc.queryForList("SELECT * FROM content_release WHERE course_id=? ORDER BY version_no DESC,id LIMIT ? OFFSET ?",course,size,(page-1L)*size).stream().map(r->mapper.convertValue(releaseDto(r),ContentRelease.class)).toList(),page,size,jdbc.queryForObject("SELECT COUNT(*) FROM content_release WHERE course_id=?",Long.class,course));
+        return new cn.xuexizhitu.learning.api.LearningDtos.Page<>(jdbc.queryForList("SELECT id,course_id,version_no,state,published_at,source_sha,draft_revision FROM content_release WHERE course_id=? ORDER BY version_no DESC,id LIMIT ? OFFSET ?",course,size,(page-1L)*size).stream().map(r->mapper.convertValue(releaseDto(r),ContentRelease.class)).toList(),page,size,jdbc.queryForObject("SELECT COUNT(*) FROM content_release WHERE course_id=?",Long.class,course));
     }
     public ContentDraft snapshot(String course,String release) {
         var row=release(course,release,false);

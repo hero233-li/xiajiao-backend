@@ -10456,6 +10456,44 @@ paths:
               confirm: true
       x-required-role: ADMIN
   /admin/courses:
+    get:
+      tags: [courses]
+      operationId: listAdminCourses
+      summary: 管理员课程目录（包含停用课程）
+      description: 仅 ADMIN。省略 cycleId 读取全部课程；提供 cycleId 读取周期关联课程，均包含停用项，可重新启用。无需返回个人报名或进度。
+      parameters:
+        - name: cycleId
+          in: query
+          required: false
+          schema: {type: string, format: uuid}
+        - name: page
+          in: query
+          schema: {type: integer, minimum: 1, default: 1}
+        - name: size
+          in: query
+          schema: {type: integer, minimum: 1, maximum: 100, default: 20}
+      responses:
+        '200':
+          description: 管理课程分页
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [code, message, data]
+                properties:
+                  code: {type: integer}
+                  message: {type: string}
+                  data:
+                    type: object
+                    required: [items, page, size, total]
+                    properties:
+                      items: {type: array, items: {$ref: '#/components/schemas/AdminCourseEntry'}}
+                      page: {type: integer}
+                      size: {type: integer}
+                      total: {type: integer, format: int64}
+        '401': {description: 未登录或登录失效}
+        '403': {description: 非管理员}
+        '404': {description: 周期不存在}
     post:
       tags:
         - courses
@@ -14685,7 +14723,7 @@ paths:
       tags:
         - LocalGrading
       summary: 已发布评分标准；管理员同时可读草稿
-      description: 已发布评分标准；管理员同时可读草稿
+      description: 管理员可维护尚未解锁的试卷评分标准（校验周期与课程关联）；普通用户继续受真题解锁与报考限制。
       parameters:
         - in: query
           name: courseId
@@ -15709,6 +15747,17 @@ components:
         example: 74645d73-c03d-5f22-add1-a09772609502
       example: 74645d73-c03d-5f22-add1-a09772609502
   schemas:
+    AdminCourseEntry:
+      type: object
+      additionalProperties: false
+      required: [id, code, name, courseType, active, releaseId]
+      properties:
+        id: {type: string, format: uuid}
+        code: {type: string}
+        name: {type: string}
+        courseType: {type: string, enum: [THEORY, PRACTICE]}
+        active: {type: boolean}
+        releaseId: {type: string, format: uuid, nullable: true}
     Navigation:
       type: object
       additionalProperties: false
