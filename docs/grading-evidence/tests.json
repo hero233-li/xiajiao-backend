@@ -1,0 +1,165 @@
+{
+  "unit": {
+    "tests": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "cn.xuexizhitu.service.PlanAllocatorTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.service.BusinessRulesTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.service.RegistrationServiceTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.security.JwtUserConverterTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.service.TokenServiceTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.validation.PasswordValidationTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.service.ScoreAnalysisTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.service.AssessmentPlannerTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.service.WeeklyPlanAllocatorTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.controller.HealthControllerTest",
+        "tests": "6",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "mysql": {
+    "tests": 65,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "cn.xuexizhitu.RemainingMySqlIT",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.AssessmentMySqlIT",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.MigrationMySqlIT",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.BackendMySqlIT",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.RefactorHttpMySqlIT",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.LearningMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.PracticeMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.GradingHttpMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "cn.xuexizhitu.ContentMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "worker": {
+    "tests": 12,
+    "failures": 0,
+    "simulatedFaults": true,
+    "independentCleanInstallBuild": true
+  },
+  "frontend": {
+    "tests": 236,
+    "files": 23,
+    "failures": 0,
+    "build": true,
+    "generatedApiStable": true
+  },
+  "notes": "Earlier full regression found app-server provider configuration incompatibility. Corrected configuration passed real probe and targeted grading suite; all existing MySQL suites passed the full regression. Real tests are reported separately."
+}

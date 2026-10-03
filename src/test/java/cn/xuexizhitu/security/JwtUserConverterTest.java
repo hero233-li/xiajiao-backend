@@ -1,6 +1,9 @@
 package cn.xuexizhitu.security;
-import cn.xuexizhitu.entity.*;
-import cn.xuexizhitu.repository.UserRepository;
+import cn.xuexizhitu.identity.infrastructure.JwtUserConverter;
+import cn.xuexizhitu.common.BusinessException;
+import cn.xuexizhitu.identity.domain.AppUser;
+import cn.xuexizhitu.identity.domain.Role;
+import cn.xuexizhitu.identity.infrastructure.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;

@@ -1,0 +1,6 @@
+{
+  "jar": "target/backend-0.0.1-SNAPSHOT.jar",
+  "bytes": 65958073,
+  "sha256": "67107a71acfd391bb31f1d8065fbee390530e7127166a59d8a640556287ef685",
+  "openApiSha256": "45bdc38db555d93719d9378dd988e1ebe44c28235423dceaf7ed9af86581a061"
+}

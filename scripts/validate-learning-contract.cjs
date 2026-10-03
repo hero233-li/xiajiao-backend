@@ -9,6 +9,7 @@ function normalize(value) {
   if(Array.isArray(value)) return value.map(normalize);
   if(!value||typeof value!=='object') return value;
   const result={};for(const [k,v] of Object.entries(value)) if(!['nullable','example','discriminator','xml'].includes(k)) result[k]=normalize(v);
+  if(value.nullable && result.$ref)return {anyOf:[result,{type:'null'}]};
   if(value.nullable && typeof result.type==='string') {result.type=[result.type,'null'];if(result.enum&&!result.enum.includes(null))result.enum.push(null);}
   return result;
 }
@@ -16,18 +17,19 @@ const ajv=new Ajv({strict:false,allErrors:true});formats(ajv);
 ajv.addSchema(normalize({components:doc.components}),'contract');
 const samplePath=process.argv[3]||'backend/target/learning-contract-samples.json';
 const all=samplePath==='--all';
-const expected=Number(process.argv[4]||(all?98:12));
-const samples=all?['learning','content','practice','assessment','remaining'].flatMap(name=>JSON.parse(fs.readFileSync(`backend/target/${name}-contract-samples.json`,'utf8'))):JSON.parse(fs.readFileSync(samplePath,'utf8'));
+const expected=process.argv[4]?Number(process.argv[4]):(all?null:12);
+const samples=all?['learning','content','practice','assessment','remaining'].flatMap(name=>JSON.parse(fs.readFileSync(`backend/target/${name}-contract-samples.json`,'utf8'))).concat(JSON.parse(fs.readFileSync('backend/target/refactor-evidence/http-contract-samples.json','utf8')),JSON.parse(fs.readFileSync('backend/target/grading-evidence/http-contract-samples.json','utf8'))):JSON.parse(fs.readFileSync(samplePath,'utf8'));
 const routes=Object.entries(doc.paths).sort(([a],[b])=>Number(a.includes('{'))-Number(b.includes('{')));
 const validated=new Set();
 for(const sample of samples) {
   const match=routes.find(([route,ops])=>ops[sample.method]&&new RegExp('^'+route.replace(/\{[^}]+\}/g,'[^/]+')+'$').test(sample.path));
   if(!match)throw new Error('Unknown operation: '+sample.method+' '+sample.path);
   const schema=match[1][sample.method].responses[String(sample.status||200)].content['application/json'].schema;
-  const validate=ajv.compile({$ref:'contract'+schema.$ref});
+  const qualify=v=>Array.isArray(v)?v.map(qualify):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,k==='$ref'&&String(x).startsWith('#')?'contract'+x:qualify(x)])):v;
+  const validate=ajv.compile(qualify(normalize(schema)));
   if(!validate(sample.body))throw new Error(`${sample.method} ${sample.path}: ${JSON.stringify(validate.errors)}`);
   validated.add(sample.method+' '+match[0]);
 }
 if(all){const publicIds=new Set(['login','getCurrentUser','logout','refreshTokens','registerUser','getHealth']);for(const [route,operations]of routes)for(const [method,op]of Object.entries(operations))if(op.operationId&&!publicIds.has(op.operationId)&&!validated.has(method+' '+route))throw new Error('Missing business response: '+method+' '+route);}
-if(validated.size!==expected)throw new Error(`Expected ${expected} operations, got ${validated.size}`);
+if(expected!==null&&validated.size!==expected)throw new Error(`Expected ${expected} operations, got ${validated.size}`);
 console.log(`Validated ${samples.length} real responses across ${validated.size} operations against OpenAPI.`);

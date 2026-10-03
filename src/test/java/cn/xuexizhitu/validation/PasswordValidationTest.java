@@ -1,5 +1,6 @@
 package cn.xuexizhitu.validation;
-import cn.xuexizhitu.dto.*;
+
+import cn.xuexizhitu.identity.api.RegisterRequest;
 import jakarta.validation.Validation;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;

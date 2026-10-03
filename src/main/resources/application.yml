@@ -9,9 +9,9 @@ spring:
   application:
     name: xuexizhitu-backend
   datasource:
-    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/xuexizhitu?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&characterEncoding=UTF-8&sslMode=DISABLED&allowPublicKeyRetrieval=true}
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:13306/xuexizhitu?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&characterEncoding=UTF-8&sslMode=DISABLED&allowPublicKeyRetrieval=true}
     username: ${DB_USER:xuexizhitu}
-    password: ${DB_PASSWORD}
+    password: 123456
   jpa:
     open-in-view: false
     hibernate:
@@ -43,7 +43,7 @@ app:
   auth:
     registration-mode: ${APP_AUTH_REGISTRATION_MODE:DISABLED}
   jwt:
-    secret-base64: ${JWT_SECRET_BASE64}
+    secret-base64: ${JWT_SECRET_BASE64:MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=}
     issuer: ${JWT_ISSUER:xuexizhitu}
     audience: ${JWT_AUDIENCE:xuexizhitu-api}
     access-ttl: ${JWT_ACCESS_TTL:15m}

@@ -1,9 +1,11 @@
 package cn.xuexizhitu.service;
+
 import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.*;
-import cn.xuexizhitu.service.AssessmentPlanner.Candidate;
+import cn.xuexizhitu.assessment.domain.AssessmentPlanner.Candidate;
+import cn.xuexizhitu.assessment.domain.AssessmentPlanner;
 class AssessmentPlannerTest {
     @Test void augmentingPathsFindCoverageWhichGreedyCanMiss(){
         List<Candidate> bank=List.of(new Candidate("1","a",Set.of("p","q"),false),new Candidate("2","b",Set.of("p"),true));

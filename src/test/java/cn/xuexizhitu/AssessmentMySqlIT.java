@@ -1,9 +1,14 @@
 package cn.xuexizhitu;
 
-import cn.xuexizhitu.dto.*;
-import cn.xuexizhitu.entity.Role;
+import cn.xuexizhitu.assessment.application.AssessmentService;
+import cn.xuexizhitu.assessment.infrastructure.AssessmentRepository;
+import cn.xuexizhitu.assessment.infrastructure.AssessmentTimeoutWorker;
+
+import cn.xuexizhitu.identity.api.RegisterRequest;
+import cn.xuexizhitu.identity.api.UserDto;
+import cn.xuexizhitu.identity.domain.Role;
 import cn.xuexizhitu.security.CurrentUser;
-import cn.xuexizhitu.service.AccountService;
+import cn.xuexizhitu.identity.application.AccountService;
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AssessmentMySqlIT {
     @Container static MySQLContainer<?> mysql=new MySQLContainer<>("mysql:8.4").withDatabaseName("assessment_test");
     @DynamicPropertySource static void properties(DynamicPropertyRegistry r) {
+        r.add("app.files.root",()->System.getProperty("java.io.tmpdir")+"/xuexizhitu-it-AssessmentMySqlIT-"+UUID.randomUUID());
         r.add("spring.datasource.url",mysql::getJdbcUrl);r.add("spring.datasource.username",mysql::getUsername);r.add("spring.datasource.password",mysql::getPassword);
         r.add("app.assessments.timeout-enabled",()->false);r.add("app.bootstrap.enabled",()->false);r.add("app.auth.registration-mode",()->"DISABLED");
         r.add("app.jwt.secret-base64",()->"MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=");
@@ -39,8 +45,8 @@ class AssessmentMySqlIT {
         new ObjectMapper().writeValue(new java.io.File("target/assessment-contract-samples.json"),samples);
     }
     private static final String COURSE="afdac469-0fe4-5007-833c-51a71333967b", OTHER="ccd819bb-a48b-5c75-bfbf-e26219023fef", CYCLE="0ebdbbfe-d607-54b5-9c21-4e0adade5e4c";
-    @Autowired cn.xuexizhitu.service.AssessmentService service;
-    @Autowired cn.xuexizhitu.repository.AssessmentRepository repository;
+    @Autowired cn.xuexizhitu.assessment.application.AssessmentService service;
+    @Autowired cn.xuexizhitu.assessment.infrastructure.AssessmentRepository repository;
     private String course,release,chapter,policy;
     private final List<String> revisions=new ArrayList<>();
     private final List<String> questionIds=new ArrayList<>();
@@ -140,7 +146,7 @@ class AssessmentMySqlIT {
     @Test void expiredGETIsReadOnlyThenBackgroundSettlesOfflineAndWritesCannotChangeAnswers()throws Exception {
         JsonNode s=apply(uuid());String id=s.path("id").asText();save(id,s.path("questions").get(0),0);expire(id);
         JsonNode before=session(id);assertThat(before.path("deadlineReached").asBoolean()).isTrue();assertThat(before.path("status").asText()).isEqualTo("IN_PROGRESS");
-        assertThat(repository.pending()).contains(id);new cn.xuexizhitu.config.AssessmentTimeoutWorker(repository,service).settle();service.settleTimeout(id);
+        assertThat(repository.pending()).contains(id);new cn.xuexizhitu.assessment.infrastructure.AssessmentTimeoutWorker(new cn.xuexizhitu.operations.infrastructure.BackgroundFailures(jdbc),repository,service).settle();service.settleTimeout(id);
         JsonNode result=read(get(base()+"/assessments/"+id+"/result").param("cycleId",CYCLE));assertThat(result.path("status").asText()).isEqualTo("TIMED_OUT");assertThat(result.path("correctCount").asInt()).isEqualTo(1);
         assertThat(result.path("submittedAt").asText()).isEqualTo(before.path("deadlineAt").asText());
         JsonNode second=apply(uuid());id=second.path("id").asText();expire(id);

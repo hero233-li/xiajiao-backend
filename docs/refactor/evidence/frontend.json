@@ -1,0 +1,9 @@
+{
+  "testFiles": 23,
+  "tests": 236,
+  "failures": 0,
+  "apiGenerationStable": true,
+  "typecheck": true,
+  "productionBuild": true,
+  "userHead": "cc6bd67"
+}

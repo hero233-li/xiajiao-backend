@@ -1,0 +1,10 @@
+{
+  "cliVersion": "0.147.0",
+  "authorization": "chatgpt",
+  "plan": "plus",
+  "actualImageInput": "localImage",
+  "structuredOutput": "outputSchema",
+  "model": "gpt-5.6-sol",
+  "isolatedThread": true,
+  "apiKeyUsed": false
+}

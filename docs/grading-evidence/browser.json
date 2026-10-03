@@ -1,0 +1,220 @@
+{
+  "mockRoutes": false,
+  "actualBrowser": true,
+  "queuedToCompleted": true,
+  "scorePageRefreshed": true,
+  "score": 100,
+  "calls": [
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/cycles",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/by-code/00023",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/by-code/00023",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/unlock",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/dashboard",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/score-trend",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/prediction",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/papers",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/workers",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/rubrics",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions",
+      "status": 200,
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/pages",
+      "status": 200,
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/grading/submissions",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/grading/tasks/442ab986-e997-4423-8ed0-4d15cc5d0f63",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/workers",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/tasks/442ab986-e997-4423-8ed0-4d15cc5d0f63",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/workers",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/tasks/442ab986-e997-4423-8ed0-4d15cc5d0f63",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/workers",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/tasks/442ab986-e997-4423-8ed0-4d15cc5d0f63",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/workers",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/tasks/442ab986-e997-4423-8ed0-4d15cc5d0f63",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/grading/submissions/39a01dfb-af4c-4a09-a1c6-fd649dc85ea1/tasks",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/prediction",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/score-trend",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/unlock",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/papers",
+      "status": 200,
+      "method": "GET"
+    }
+  ],
+  "errors": []
+}

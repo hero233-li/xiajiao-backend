@@ -1,10 +1,16 @@
 package cn.xuexizhitu.controller;
+import cn.xuexizhitu.config.SecurityConfiguration;
+import cn.xuexizhitu.operations.api.HealthController;
+import cn.xuexizhitu.common.ErrorCode;
+import cn.xuexizhitu.common.BusinessException;
+import cn.xuexizhitu.identity.api.AuthController;
+import cn.xuexizhitu.identity.application.RegistrationService;
 import cn.xuexizhitu.common.*;
-import cn.xuexizhitu.config.*;
-import cn.xuexizhitu.dto.LoginRequest;
-import cn.xuexizhitu.repository.UserRepository;
-import cn.xuexizhitu.security.JwtUserConverter;
-import cn.xuexizhitu.service.AuthService;
+import cn.xuexizhitu.identity.infrastructure.JwtConfiguration;
+import cn.xuexizhitu.identity.api.LoginRequest;
+import cn.xuexizhitu.identity.infrastructure.UserRepository;
+import cn.xuexizhitu.identity.infrastructure.JwtUserConverter;
+import cn.xuexizhitu.identity.application.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,7 +29,7 @@ class HealthControllerTest {
     @Autowired MockMvc mvc;
     @MockitoBean UserRepository users;
     @MockitoBean AuthService auth;
-    @MockitoBean cn.xuexizhitu.service.RegistrationService registration;
+    @MockitoBean cn.xuexizhitu.identity.application.RegistrationService registration;
     @Test void anonymousHealthUsesEnvelope() throws Exception {
         mvc.perform(get("/api/v1/health")).andExpect(status().isOk()).andExpect(header().string("Cache-Control","no-store"))
             .andExpect(jsonPath("$.code").value(0)).andExpect(jsonPath("$.data.status").value("UP")).andExpect(jsonPath("$.message").value("ok"));

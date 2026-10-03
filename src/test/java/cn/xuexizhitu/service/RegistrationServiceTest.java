@@ -1,9 +1,12 @@
 package cn.xuexizhitu.service;
+import cn.xuexizhitu.identity.application.RegistrationService;
+import cn.xuexizhitu.common.BusinessException;
+import cn.xuexizhitu.identity.application.AccountService;
 import cn.xuexizhitu.common.*;
-import cn.xuexizhitu.config.RegistrationProperties;
-import cn.xuexizhitu.config.RegistrationProperties.Mode;
-import cn.xuexizhitu.dto.*;
-import cn.xuexizhitu.entity.Role;
+import cn.xuexizhitu.identity.infrastructure.RegistrationProperties;
+import cn.xuexizhitu.identity.infrastructure.RegistrationProperties.Mode;
+import cn.xuexizhitu.identity.api.RegisterRequest;
+import cn.xuexizhitu.identity.domain.Role;
 import cn.xuexizhitu.security.CurrentUser;
 import org.junit.jupiter.api.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

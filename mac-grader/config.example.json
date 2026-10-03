@@ -1,0 +1,7 @@
+{
+  "server": "https://study.example.com",
+  "tokenFile": "/Users/YOUR_USER/Library/Application Support/XuexiZhituGrader/pairing.token",
+  "stateDir": "/Users/YOUR_USER/Library/Application Support/XuexiZhituGrader/state",
+  "codexBinary": "/Users/YOUR_USER/.local/bin/codex",
+  "pdfRenderer": "/opt/homebrew/bin/pdftoppm"
+}

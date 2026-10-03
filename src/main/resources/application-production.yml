@@ -1,0 +1,13 @@
+# Production requires explicit credentials; the developer's local configuration remains intact.
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+app:
+  files:
+    root: ${APP_FILES_ROOT}
+  jwt:
+    secret-base64: ${JWT_SECRET_BASE64}
+  bootstrap:
+    enabled: false

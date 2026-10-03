@@ -1,8 +1,13 @@
 package cn.xuexizhitu;
-import cn.xuexizhitu.dto.*;
-import cn.xuexizhitu.entity.Role;
-import cn.xuexizhitu.repository.*;
-import cn.xuexizhitu.service.AccountService;
+import cn.xuexizhitu.common.BusinessException;
+import cn.xuexizhitu.identity.api.LoginRequest;
+import cn.xuexizhitu.identity.api.RefreshRequest;
+import cn.xuexizhitu.identity.api.RegisterRequest;
+import cn.xuexizhitu.identity.api.UserDto;
+import cn.xuexizhitu.identity.domain.Role;
+import cn.xuexizhitu.identity.infrastructure.LoginIdentifierRepository;
+import cn.xuexizhitu.identity.infrastructure.UserRepository;
+import cn.xuexizhitu.identity.application.AccountService;
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BackendMySqlIT {
     @Container static MySQLContainer<?> mysql=new MySQLContainer<>("mysql:8.4").withDatabaseName("xuexizhitu");
     @DynamicPropertySource static void properties(DynamicPropertyRegistry r) {
+        r.add("app.files.root",()->System.getProperty("java.io.tmpdir")+"/xuexizhitu-it-BackendMySqlIT-"+UUID.randomUUID());
         r.add("spring.datasource.url",mysql::getJdbcUrl);r.add("spring.datasource.username",mysql::getUsername);r.add("spring.datasource.password",mysql::getPassword);
         r.add("app.bootstrap.enabled",() -> false);r.add("app.auth.registration-mode",() -> "DISABLED");
         r.add("app.jwt.secret-base64",() -> "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=");
@@ -31,7 +37,7 @@ class BackendMySqlIT {
     @Autowired UserRepository users;@Autowired PasswordEncoder encoder;@Autowired LoginIdentifierRepository identifiers;
     @Test void flywayCreatesAllApprovedTablesAndRejectsInvalidRole() {
         Integer count=jdbc.queryForObject("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name<>'flyway_schema_history'",Integer.class);
-        assertThat(count).isEqualTo(54);assertThat(jdbc.queryForObject("SELECT success FROM flyway_schema_history WHERE version='1'",Boolean.class)).isTrue();
+        assertThat(count).isEqualTo(65);assertThat(jdbc.queryForObject("SELECT success FROM flyway_schema_history WHERE version='1'",Boolean.class)).isTrue();
         assertThatThrownBy(() -> jdbc.update("INSERT INTO app_user(id,username,email,password_hash,role) VALUES(?,?,?,?,?)",UUID.randomUUID().toString(),"invalid","invalid@example.com","hash","OTHER")).isInstanceOf(org.springframework.dao.DataAccessException.class).hasMessageContaining("ck_app_user_1");
     }
     @Test void loginRefreshReplayAndLogoutAreEnforcedOverHttp() throws Exception {

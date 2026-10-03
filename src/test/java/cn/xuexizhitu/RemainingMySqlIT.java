@@ -1,9 +1,14 @@
 package cn.xuexizhitu;
+import cn.xuexizhitu.planning.application.PlanService;
+import cn.xuexizhitu.common.BusinessException;
+import cn.xuexizhitu.common.BusinessData;
 
-import cn.xuexizhitu.dto.*;
-import cn.xuexizhitu.entity.Role;
+import cn.xuexizhitu.files.application.PrivateFileStore;
+import cn.xuexizhitu.identity.api.RegisterRequest;
+import cn.xuexizhitu.identity.api.UserDto;
+import cn.xuexizhitu.identity.domain.Role;
 import cn.xuexizhitu.security.CurrentUser;
-import cn.xuexizhitu.service.AccountService;
+import cn.xuexizhitu.identity.application.AccountService;
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RemainingMySqlIT {
     @Container static MySQLContainer<?> mysql=new MySQLContainer<>("mysql:8.4").withDatabaseName("remaining_test");
     @DynamicPropertySource static void properties(DynamicPropertyRegistry r) {
+        r.add("app.files.root",()->System.getProperty("java.io.tmpdir")+"/xuexizhitu-it-RemainingMySqlIT-"+UUID.randomUUID());
         r.add("spring.datasource.url",mysql::getJdbcUrl);r.add("spring.datasource.username",mysql::getUsername);r.add("spring.datasource.password",mysql::getPassword);
         r.add("app.files.root",()->"/private/tmp/xuexi-files-it-"+mysql.getContainerId());r.add("app.bootstrap.enabled",()->false);r.add("app.auth.registration-mode",()->"DISABLED");
         r.add("app.jwt.secret-base64",()->"MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=");
     }
-    @Autowired cn.xuexizhitu.service.PrivateFileStore files;
-    @Autowired cn.xuexizhitu.service.PlanService plans;
+    @Autowired cn.xuexizhitu.files.application.PrivateFileStore files;
+    @Autowired cn.xuexizhitu.planning.application.PlanService plans;
     @Autowired MockMvc mvc; @Autowired ObjectMapper mapper; @Autowired JdbcTemplate jdbc; @Autowired AccountService accounts;
     private UserDto user;
     private static final List<JsonNode> samples=new CopyOnWriteArrayList<>();
@@ -167,23 +173,21 @@ class RemainingMySqlIT {
         JsonNode fresh=json(post(route+"/reschedule-previews"),node(Map.of("baseRevision",1,"config",config)));json(post(route+"/reschedule-previews/"+fresh.path("id").asText()+"/confirmation"),node(Map.of("baseRevision",1,"inputFingerprint",fresh.path("inputFingerprint").asText(),"acceptUnscheduled",false,"confirm",true)));assertThat(read(get(route)).path("tasks").get(0).path("itemId").asText()).isEqualTo(newItem);assertThat(read(get(route+"/revisions/1")).path("tasks").get(0).path("itemId").asText()).isEqualTo(oldItem);assertThat(read(get(route+"/revisions/1")).path("tasks").size()).isEqualTo(1);
     }
     @Test void weeklyPlanCreatesFourCourseWindowsAndFinalPaperWeek() throws Exception {
-        List<String> order=new ArrayList<>();String cycle=null;var start=cn.xuexizhitu.common.BusinessData.today();for(int i=0;i<4;i++){planFixture();if(cycle==null)cycle=planCycle;order.add(planCourse);if(!cycle.equals(planCycle))jdbc.update("INSERT INTO cycle_course(cycle_id,course_id,exam_date) VALUES(?,?,?)",cycle,planCourse,start.plusDays(40));else jdbc.update("UPDATE cycle_course SET exam_date=? WHERE cycle_id=? AND course_id=?",start.plusDays(40),cycle,planCourse);jdbc.update("INSERT INTO plan_task_template(id,release_id,course_id,kind,title,estimated_minutes,sort_order) VALUES(?,?,?,'PAPER','真题测试',60,0)",UUID.randomUUID().toString(),planRelease,planCourse);}
+        List<String> order=new ArrayList<>();String cycle=null;var start=cn.xuexizhitu.common.BusinessData.today();for(int i=0;i<4;i++){planFixture();if(cycle==null)cycle=planCycle;order.add(planCourse);if(!cycle.equals(planCycle))jdbc.update("INSERT INTO cycle_course(cycle_id,course_id,exam_date) VALUES(?,?,?)",cycle,planCourse,start.plusDays(40));else jdbc.update("UPDATE cycle_course SET exam_date=? WHERE cycle_id=? AND course_id=?",start.plusDays(40),cycle,planCourse);jdbc.update("INSERT INTO plan_task_template(id,release_id,course_id,kind,title,estimated_minutes,sort_order) VALUES(?,?,?,'PAPER','真题测试',60,0)",UUID.randomUUID().toString(),planRelease,planCourse);jdbc.update("INSERT INTO plan_task_template(id,release_id,course_id,kind,title,estimated_minutes,sort_order) VALUES(?,?,?,'REVIEW','管理员复习模板',30,1)",UUID.randomUUID().toString(),planRelease,planCourse);}
         List<Object> caps=new ArrayList<>();for(int i=0;i<35;i++)caps.add(cn.xuexizhitu.common.BusinessData.obj("day",start.plusDays(i).toString(),"capacityMinutes",60));JsonNode config=node(cn.xuexizhitu.common.BusinessData.obj("cycleId",cycle,"name","完整五周","strategy","WEEKLY_35","startDate",start.toString(),"endDate",start.plusDays(34).toString(),"coursePriority",order,"courseScope",order,"dayCapacities",caps));JsonNode plan=json(post("/api/v1/schedule/plans"),node(Map.of("config",config,"acceptUnscheduled",false)));assertThat(plan.path("dayCount").asInt()).isEqualTo(35);assertThat(plan.path("weeks").size()).isEqualTo(5);
-        Map<String,JsonNode> tasks=new HashMap<>();plan.path("tasks").forEach(t->tasks.put(t.path("id").asText(),t));for(int i=0;i<35;i++)for(JsonNode segment:plan.path("days").get(i).path("segments")){var task=tasks.get(segment.path("taskId").asText());if(i<28){assertThat(task.path("kind").asText()).isEqualTo("ITEM");assertThat(task.path("courseId").asText()).isEqualTo(order.get(i/7));}else assertThat(task.path("kind").asText()).isEqualTo("PAPER");}
+        Map<String,JsonNode> tasks=new HashMap<>();plan.path("tasks").forEach(t->tasks.put(t.path("id").asText(),t));for(int i=0;i<35;i++)for(JsonNode segment:plan.path("days").get(i).path("segments")){var task=tasks.get(segment.path("taskId").asText());if(i<28){assertThat(task.path("kind").asText()).isEqualTo("ITEM");assertThat(task.path("courseId").asText()).isEqualTo(order.get(i/7));}else {assertThat(task.path("kind").asText()).isIn("PAPER","REVIEW");assertThat(task.path("templateId").isNull()).isFalse();}}
+        assertThat(tasks.values().stream().filter(t->t.path("kind").asText().equals("REVIEW")).map(t->t.path("estimatedMinutes").asInt()).toList()).containsExactly(30,30,30,30);
     }
-    @Test void weeklyPlanWithoutTemplatesHasRealPracticeReviewTasks() throws Exception {
+    @Test void weeklyPlanWithoutTemplatesIsBlockedWithoutCreatingSyntheticTasks() throws Exception {
         List<String> order=new ArrayList<>();String cycle=null;var start=cn.xuexizhitu.common.BusinessData.today();
         for(int i=0;i<4;i++){planFixture();if(cycle==null)cycle=planCycle;order.add(planCourse);if(!cycle.equals(planCycle))jdbc.update("INSERT INTO cycle_course(cycle_id,course_id,exam_date) VALUES(?,?,?)",cycle,planCourse,start.plusDays(40));else jdbc.update("UPDATE cycle_course SET exam_date=? WHERE cycle_id=? AND course_id=?",start.plusDays(40),cycle,planCourse);}
         List<Object> caps=new ArrayList<>();for(int i=0;i<35;i++)caps.add(cn.xuexizhitu.common.BusinessData.obj("day",start.plusDays(i).toString(),"capacityMinutes",60));
         JsonNode config=node(cn.xuexizhitu.common.BusinessData.obj("cycleId",cycle,"strategy","WEEKLY_35","startDate",start.toString(),"endDate",start.plusDays(34).toString(),"coursePriority",order,"courseScope",order,"dayCapacities",caps));
-        JsonNode plan=json(post("/api/v1/schedule/plans"),node(Map.of("config",config,"acceptUnscheduled",false)));
-        List<JsonNode> review=new ArrayList<>();plan.path("tasks").forEach(t->{if(t.path("kind").asText().equals("REVIEW"))review.add(t);});
-        assertThat(review).hasSize(4);assertThat(plan.path("weeks").get(4).path("scheduledMinutes").asInt()).isEqualTo(240);
-        for(var task:review){assertThat(task.path("templateId").isNull()).isTrue();assertThat(task.path("target").path("pane").asText()).isEqualTo("PRACTICE");}
-        String route="/api/v1/schedule/plans/"+plan.path("id").asText();var changed=(com.fasterxml.jackson.databind.node.ObjectNode)config.deepCopy();changed.put("name","复习任务保留");
-        JsonNode preview=json(post(route+"/reschedule-previews"),node(Map.of("baseRevision",1,"config",changed)));
-        JsonNode saved=json(post(route+"/reschedule-previews/"+preview.path("id").asText()+"/confirmation"),node(Map.of("baseRevision",1,"inputFingerprint",preview.path("inputFingerprint").asText(),"acceptUnscheduled",false,"confirm",true)));
-        assertThat(saved.path("tasks").size()).isEqualTo(8);
+        int before=jdbc.queryForObject("SELECT COUNT(*) FROM learning_plan WHERE user_id=?",Integer.class,user.id());
+        mvc.perform(as(user,post("/api/v1/schedule/plans").contentType("application/json").content(node(Map.of("config",config,"acceptUnscheduled",false)).toString())))
+            .andExpect(status().isUnprocessableEntity()).andExpect(jsonPath("$.message").value(org.hamcrest.Matchers.containsString("管理员维护")));
+        assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM learning_plan WHERE user_id=?",Integer.class,user.id())).isEqualTo(before);
+
     }
 
 }

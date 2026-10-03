@@ -1,7 +1,10 @@
 package cn.xuexizhitu.service;
+import cn.xuexizhitu.identity.application.TokenService;
 import cn.xuexizhitu.common.BusinessException;
-import cn.xuexizhitu.config.*;
-import cn.xuexizhitu.entity.*;
+import cn.xuexizhitu.identity.infrastructure.JwtConfiguration;
+import cn.xuexizhitu.identity.infrastructure.JwtProperties;
+import cn.xuexizhitu.identity.domain.AppUser;
+import cn.xuexizhitu.identity.domain.Role;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

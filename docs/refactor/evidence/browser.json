@@ -1,0 +1,198 @@
+{
+  "realHttp": true,
+  "mockedRoutes": 0,
+  "login": true,
+  "catalog": true,
+  "scoreCreated": true,
+  "imageArchived": true,
+  "scoreRevised": true,
+  "historicalScorePreserved": true,
+  "pageErrors": [],
+  "calls": [
+    {
+      "path": "/api/v1/auth/login",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/cycles",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/courses/by-code/00023",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/courses/afdac469-0fe4-5007-833c-51a71333967b/learning-position",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "path": "/api/v1/catalog/courses/afdac469-0fe4-5007-833c-51a71333967b",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/dashboard",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/courses/afdac469-0fe4-5007-833c-51a71333967b/learning-position",
+      "method": "PUT",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/cycles",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/courses/by-code/00023",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/courses/by-code/00023",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/dashboard",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/prediction",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/papers",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/score-trend",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/unlock",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/prediction",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/score-trend",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/papers",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/unlock",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores/3390271e-abdf-4f17-be39-7380ead0c4f3/images",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/prediction",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/papers",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/score-trend",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/unlock",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores/3390271e-abdf-4f17-be39-7380ead0c4f3",
+      "method": "PUT",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/prediction",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/score-trend",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/papers",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/unlock",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/exams/courses/afdac469-0fe4-5007-833c-51a71333967b/scores/3390271e-abdf-4f17-be39-7380ead0c4f3/revisions",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

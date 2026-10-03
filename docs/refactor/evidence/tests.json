@@ -1,0 +1,162 @@
+{
+  "unit": {
+    "tests": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "cn.xuexizhitu.service.PlanAllocatorTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.003"
+      },
+      {
+        "name": "cn.xuexizhitu.service.BusinessRulesTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.003"
+      },
+      {
+        "name": "cn.xuexizhitu.service.RegistrationServiceTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.022"
+      },
+      {
+        "name": "cn.xuexizhitu.security.JwtUserConverterTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.606"
+      },
+      {
+        "name": "cn.xuexizhitu.service.TokenServiceTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.079"
+      },
+      {
+        "name": "cn.xuexizhitu.validation.PasswordValidationTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.015"
+      },
+      {
+        "name": "cn.xuexizhitu.service.ScoreAnalysisTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.013"
+      },
+      {
+        "name": "cn.xuexizhitu.service.AssessmentPlannerTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.004"
+      },
+      {
+        "name": "cn.xuexizhitu.service.WeeklyPlanAllocatorTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.006"
+      },
+      {
+        "name": "cn.xuexizhitu.controller.HealthControllerTest",
+        "tests": "6",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "1.878"
+      }
+    ]
+  },
+  "mysql": {
+    "tests": 57,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "cn.xuexizhitu.RemainingMySqlIT",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "29.218"
+      },
+      {
+        "name": "cn.xuexizhitu.AssessmentMySqlIT",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "35.326"
+      },
+      {
+        "name": "cn.xuexizhitu.MigrationMySqlIT",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "25.691"
+      },
+      {
+        "name": "cn.xuexizhitu.BackendMySqlIT",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "24.508"
+      },
+      {
+        "name": "cn.xuexizhitu.RefactorHttpMySqlIT",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "38.189"
+      },
+      {
+        "name": "cn.xuexizhitu.LearningMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "30.232"
+      },
+      {
+        "name": "cn.xuexizhitu.PracticeMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "27.175"
+      },
+      {
+        "name": "cn.xuexizhitu.ContentMySqlIT",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "26.713"
+      }
+    ]
+  }
+}

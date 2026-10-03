@@ -1,9 +1,12 @@
 package cn.xuexizhitu;
 
-import cn.xuexizhitu.dto.*;
-import cn.xuexizhitu.entity.Role;
+
+import cn.xuexizhitu.identity.api.LoginRequest;
+import cn.xuexizhitu.identity.api.RegisterRequest;
+import cn.xuexizhitu.identity.api.UserDto;
+import cn.xuexizhitu.identity.domain.Role;
 import cn.xuexizhitu.security.CurrentUser;
-import cn.xuexizhitu.service.AccountService;
+import cn.xuexizhitu.identity.application.AccountService;
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ContentMySqlIT {
     @Container static MySQLContainer<?> mysql=new MySQLContainer<>("mysql:8.4").withDatabaseName("content_test");
     @DynamicPropertySource static void properties(DynamicPropertyRegistry r) {
+        r.add("app.files.root",()->System.getProperty("java.io.tmpdir")+"/xuexizhitu-it-ContentMySqlIT-"+UUID.randomUUID());
         r.add("spring.datasource.url",mysql::getJdbcUrl);r.add("spring.datasource.username",mysql::getUsername);r.add("spring.datasource.password",mysql::getPassword);
         r.add("app.bootstrap.enabled",()->false);r.add("app.auth.registration-mode",()->"DISABLED");
         r.add("app.jwt.secret-base64",()->"MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=");
