@@ -1,0 +1,28 @@
+--- a/docs/openapi.yaml
++++ b/docs/openapi.yaml
+@@ -18937,6 +18937,15 @@
+       type: object
+       additionalProperties: false
+       properties:
++        name:
++          type: string
++          minLength: 1
++          maxLength: 100
++          description: 用户计划名称；旧计划未设置时显示日期范围
++        strategy:
++          type: string
++          enum: [SEQUENTIAL, WEEKLY_35]
++          description: 省略为原连续排期；WEEKLY_35固定35天、4门理论科目，前4周各1门，第5周真题与复习
+         cycleId:
+           type: string
+           description: 稳定UUID
+@@ -19646,6 +19655,9 @@
+       type: object
+       additionalProperties: false
+       properties:
++        config:
++          $ref: '#/components/schemas/PlanConfig'
++          description: 完整配置编辑预览；原版本与学习记录保留。不提供时仍仅顺延逾期任务。
+         baseRevision:
+           type: integer
+           minimum: 1
