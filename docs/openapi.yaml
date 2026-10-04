@@ -15315,7 +15315,6 @@ paths:
             schema:
               type: object
               additionalProperties: false
-              required: []
               properties: {}
   /grading-worker/tasks/{id}/renew:
     post:

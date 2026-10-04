@@ -1,0 +1,1174 @@
+openapi: 3.0.3
+info:
+  title: 知途个人平台增量接口
+  version: 1.0.0
+paths:
+  /api/v1/fitness/summary:
+    get:
+      tags:
+        - fitness
+      summary: 当前用户今日健身摘要
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/FitnessSummary"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/fitness/days/{date}:
+    get:
+      tags:
+        - fitness
+      summary: 指定日期详情与统一状态
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/FitnessDay"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/fitness/history:
+    get:
+      tags:
+        - fitness
+      summary: 日期日历（最多367天）
+      security:
+        - bearerAuth: []
+      parameters:
+        - &a1
+          name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - &a2
+          name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FitnessDay"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/fitness/statistics:
+    get:
+      tags:
+        - fitness
+      summary: 周/月或自定义范围统计
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a1
+        - *a2
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/FitnessStats"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/fitness/records/{kind}:
+    get:
+      tags:
+        - fitness
+      summary: 按当前用户分页，更新时间和标识倒序
+      security:
+        - bearerAuth: []
+      parameters:
+        - &a3
+          name: kind
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: &a8
+              - goal
+              - weight
+              - training-plan
+              - training
+              - meal-plan
+              - meals
+              - checkin
+              - water
+              - training-template
+              - meal-template
+              - week-template
+              - profile
+        - &a6
+          name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - &a7
+          name: size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 30
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/FitnessPage"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/fitness/records/{kind}/{key}:
+    get:
+      tags:
+        - fitness
+      summary: 单条记录，不存在返回null
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a3
+        - &a4
+          name: key
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 每日记录为YYYY-MM-DD，模板/目标为UUID，profile为current
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/FitnessEntry"
+                    nullable: true
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+    put:
+      tags:
+        - fitness
+      summary: 按类型保存记录，目标新增历史版本
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a3
+        - *a4
+        - &a5
+          name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/FitnessEntry"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FitnessWrite"
+    delete:
+      tags:
+        - fitness
+      summary: 事务删除本人记录（保留冲突版本）
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a3
+        - *a4
+        - name: revision
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    nullable: true
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/fitness/copy:
+    post:
+      tags:
+        - fitness
+      summary: 源计划/模板复制为独立日期快照
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a5
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/FitnessEntry"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - sourceKind
+                - sourceKey
+                - destination
+                - expectedRevision
+              properties:
+                sourceKind:
+                  type: string
+                  enum:
+                    - training-plan
+                    - training-template
+                    - meal-plan
+                    - meal-template
+                sourceKey:
+                  type: string
+                destination:
+                  type: string
+                  format: date
+                expectedRevision:
+                  type: integer
+                  minimum: -1
+  /api/v1/fitness/weeks/generate:
+    post:
+      tags:
+        - fitness
+      summary: 周模板生成7天安排，任一天冲突整体回滚
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a5
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/FitnessEntry"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - templateKey
+                - monday
+                - expectedRevisions
+              properties:
+                templateKey:
+                  type: string
+                  format: uuid
+                monday:
+                  type: string
+                  format: date
+                expectedRevisions:
+                  type: array
+                  minItems: 7
+                  maxItems: 7
+                  items:
+                    type: integer
+                    minimum: -1
+  /api/v1/fitness/goals/end:
+    post:
+      tags:
+        - fitness
+      summary: 结束当前目标并新增历史事件
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a5
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      ended:
+                        type: boolean
+                      revision:
+                        type: integer
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - expectedGoalRevision
+              properties:
+                expectedGoalRevision:
+                  type: integer
+                  minimum: 0
+  /api/v1/fitness/goals/history:
+    get:
+      tags:
+        - fitness
+      summary: 目标创建/调整/结束事件分页
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a6
+        - *a7
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            version:
+                              type: integer
+                            goalKey:
+                              type: string
+                            action:
+                              type: string
+                              enum:
+                                - CREATED
+                                - ADJUSTED
+                                - ENDED
+                            createdAt:
+                              type: string
+                      page:
+                        type: integer
+                      size:
+                        type: integer
+                      total:
+                        type: integer
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+  /api/v1/personal/summary:
+    get:
+      tags:
+        - fitness
+      summary: 统一个人首页：复用学习聚合与本人健身聚合
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      today:
+                        type: string
+                        format: date
+                      study:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                          message:
+                            type: string
+                          target:
+                            type: object
+                            nullable: true
+                      fitness:
+                        $ref: "#/components/schemas/FitnessSummary"
+                      fitnessToday:
+                        $ref: "#/components/schemas/FitnessDay"
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    GoalType:
+      type: string
+      enum:
+        - LOSE
+        - GAIN
+        - MAINTAIN
+    ExerciseType:
+      type: string
+      enum:
+        - STRENGTH
+        - CARDIO
+        - MOBILITY
+        - OTHER
+    TrainingStatus:
+      type: string
+      enum:
+        - COMPLETED
+        - PARTIAL
+        - SKIPPED
+        - REST
+    MealType:
+      type: string
+      enum:
+        - BREAKFAST
+        - LUNCH
+        - DINNER
+        - SNACK
+    Goal:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          $ref: "#/components/schemas/GoalType"
+        startDate:
+          type: string
+          format: date
+        startWeight:
+          type: number
+        targetWeight:
+          type: number
+        targetDate:
+          type: string
+          nullable: true
+          format: date
+        note:
+          type: string
+          nullable: true
+      required:
+        - type
+        - startDate
+        - startWeight
+        - targetWeight
+    Weight:
+      type: object
+      additionalProperties: false
+      properties:
+        kg:
+          type: number
+        note:
+          type: string
+          nullable: true
+      required:
+        - kg
+    Exercise:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: "#/components/schemas/ExerciseType"
+        sets:
+          type: number
+          nullable: true
+        reps:
+          type: number
+          nullable: true
+        kg:
+          type: number
+          nullable: true
+        minutes:
+          type: number
+          nullable: true
+        km:
+          type: number
+          nullable: true
+        note:
+          type: string
+          nullable: true
+        completed:
+          type: boolean
+          nullable: true
+      required:
+        - id
+        - name
+        - type
+    TrainingPlan:
+      type: object
+      additionalProperties: false
+      properties:
+        rest:
+          type: boolean
+        exercises:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exercise"
+          maxItems: 100
+        note:
+          type: string
+          nullable: true
+      required:
+        - rest
+        - exercises
+    Training:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: "#/components/schemas/TrainingStatus"
+        exercises:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exercise"
+          maxItems: 100
+        note:
+          type: string
+          nullable: true
+        planSnapshot:
+          allOf:
+            - $ref: "#/components/schemas/TrainingPlan"
+          nullable: true
+      required:
+        - status
+        - exercises
+    Food:
+      type: object
+      additionalProperties: false
+      properties:
+        meal:
+          $ref: "#/components/schemas/MealType"
+        name:
+          type: string
+        quantity:
+          type: number
+          nullable: true
+        unit:
+          type: string
+          nullable: true
+        kcal:
+          type: number
+          nullable: true
+        protein:
+          type: number
+          nullable: true
+        carbs:
+          type: number
+          nullable: true
+        fat:
+          type: number
+          nullable: true
+        note:
+          type: string
+          nullable: true
+      required:
+        - meal
+        - name
+    Meals:
+      type: object
+      additionalProperties: false
+      properties:
+        foods:
+          type: array
+          items:
+            $ref: "#/components/schemas/Food"
+          maxItems: 100
+        note:
+          type: string
+          nullable: true
+      required:
+        - foods
+    Checkin:
+      type: object
+      additionalProperties: false
+      properties:
+        sleepHours:
+          type: number
+          nullable: true
+        feeling:
+          type: number
+          nullable: true
+        note:
+          type: string
+          nullable: true
+      required: []
+    Water:
+      type: object
+      additionalProperties: false
+      properties:
+        ml:
+          type: number
+      required:
+        - ml
+    TrainingTemplate:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        plan:
+          $ref: "#/components/schemas/TrainingPlan"
+      required:
+        - name
+        - plan
+    WeekTemplate:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        days:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainingPlan"
+          maxItems: 7
+      required:
+        - name
+        - days
+    MealTemplate:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        plan:
+          $ref: "#/components/schemas/Meals"
+      required:
+        - name
+        - plan
+    Profile:
+      type: object
+      additionalProperties: false
+      properties:
+        displayName:
+          type: string
+        bio:
+          type: string
+          nullable: true
+        compact:
+          type: boolean
+        weekStartsMonday:
+          type: boolean
+      required:
+        - displayName
+        - compact
+        - weekStartsMonday
+    FitnessEntry:
+      type: object
+      required:
+        - kind
+        - key
+        - revision
+        - data
+      properties:
+        kind:
+          type: string
+          enum: *a8
+        key:
+          type: string
+        revision:
+          type: integer
+          format: int64
+          minimum: 0
+        data:
+          oneOf: &a9
+            - $ref: "#/components/schemas/Goal"
+            - $ref: "#/components/schemas/Weight"
+            - $ref: "#/components/schemas/TrainingPlan"
+            - $ref: "#/components/schemas/Training"
+            - $ref: "#/components/schemas/Meals"
+            - $ref: "#/components/schemas/Checkin"
+            - $ref: "#/components/schemas/Water"
+            - $ref: "#/components/schemas/TrainingTemplate"
+            - $ref: "#/components/schemas/MealTemplate"
+            - $ref: "#/components/schemas/WeekTemplate"
+            - $ref: "#/components/schemas/Profile"
+          nullable: true
+    FitnessWrite:
+      type: object
+      additionalProperties: false
+      required:
+        - expectedRevision
+        - data
+      properties:
+        expectedRevision:
+          type: integer
+          format: int64
+          minimum: -1
+        expectedGoalRevision:
+          type: integer
+          format: int64
+          minimum: -1
+          nullable: true
+          description: goal写入必填，来自summary.goalRevision
+        data:
+          oneOf: *a9
+    FitnessNutrient:
+      type: object
+      properties:
+        knownTotal:
+          type: number
+          nullable: true
+        complete:
+          type: boolean
+        knownCount:
+          type: integer
+        foodCount:
+          type: integer
+      required:
+        - knownTotal
+        - complete
+        - knownCount
+        - foodCount
+    FitnessNutrition:
+      type: object
+      properties:
+        kcal:
+          $ref: "#/components/schemas/FitnessNutrient"
+        protein:
+          $ref: "#/components/schemas/FitnessNutrient"
+        carbs:
+          $ref: "#/components/schemas/FitnessNutrient"
+        fat:
+          $ref: "#/components/schemas/FitnessNutrient"
+    FitnessWeightWindow:
+      type: object
+      properties:
+        mean:
+          type: number
+          nullable: true
+        samples:
+          type: integer
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+    FitnessDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        records:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/FitnessEntry"
+        checkedIn:
+          type: boolean
+        rest:
+          type: boolean
+        partial:
+          type: boolean
+        state:
+          type: string
+          enum:
+            - CHECKED_IN
+            - FUTURE
+            - TODAY_PENDING
+            - PARTIAL_RECORDS
+            - PAST_MISSING
+        trainingState:
+          type: string
+          enum:
+            - PENDING
+            - UNPLANNED
+            - COMPLETED
+            - PARTIAL
+            - SKIPPED
+            - REST
+        nutrition:
+          $ref: "#/components/schemas/FitnessNutrition"
+        plannedNutrition:
+          $ref: "#/components/schemas/FitnessNutrition"
+    FitnessSummary:
+      type: object
+      properties:
+        today:
+          type: string
+          format: date
+        currentGoal:
+          allOf:
+            - $ref: "#/components/schemas/FitnessEntry"
+          nullable: true
+        goalRevision:
+          type: integer
+          format: int64
+        latestWeight:
+          allOf:
+            - $ref: "#/components/schemas/FitnessEntry"
+          nullable: true
+        streak:
+          type: integer
+        weekCheckins:
+          type: integer
+        weekElapsedDays:
+          type: integer
+        weekRate:
+          type: number
+        sevenDayWeight:
+          $ref: "#/components/schemas/FitnessWeightWindow"
+    FitnessStats:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        checkinDays:
+          type: integer
+        dietDays:
+          type: integer
+        plannedTrainingDays:
+          type: integer
+        completedTrainingDays:
+          type: integer
+        partialTrainingDays:
+          type: integer
+        skippedTrainingDays:
+          type: integer
+        restDays:
+          type: integer
+        trainingRate:
+          type: number
+          nullable: true
+        sevenDayWeight:
+          $ref: "#/components/schemas/FitnessWeightWindow"
+        nutrition:
+          $ref: "#/components/schemas/FitnessNutrition"
+    FitnessPage:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/FitnessEntry"
+        total:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer

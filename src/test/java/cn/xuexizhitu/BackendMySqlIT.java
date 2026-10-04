@@ -37,7 +37,7 @@ class BackendMySqlIT {
     @Autowired UserRepository users;@Autowired PasswordEncoder encoder;@Autowired LoginIdentifierRepository identifiers;
     @Test void flywayCreatesAllApprovedTablesAndRejectsInvalidRole() {
         Integer count=jdbc.queryForObject("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name<>'flyway_schema_history'",Integer.class);
-        assertThat(count).isEqualTo(65);assertThat(jdbc.queryForObject("SELECT success FROM flyway_schema_history WHERE version='1'",Boolean.class)).isTrue();
+        assertThat(count).isEqualTo(68);assertThat(jdbc.queryForObject("SELECT success FROM flyway_schema_history WHERE version='1'",Boolean.class)).isTrue();
         assertThatThrownBy(() -> jdbc.update("INSERT INTO app_user(id,username,email,password_hash,role) VALUES(?,?,?,?,?)",UUID.randomUUID().toString(),"invalid","invalid@example.com","hash","OTHER")).isInstanceOf(org.springframework.dao.DataAccessException.class).hasMessageContaining("ck_app_user_1");
     }
     @Test void loginRefreshReplayAndLogoutAreEnforcedOverHttp() throws Exception {

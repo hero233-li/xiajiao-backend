@@ -67,3 +67,7 @@ java -jar target/backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=production
 真实题目原创资格、近五年权重、试卷和复习模板须管理员维护。新建/完整编辑五周计划每科必须有REVIEW模板及估时，缺少时提示补齐；既有默认任务快照保持。上传成绩图片仍是私有存档。独立答卷新增[服务器申请、Mac本地Codex批改](docs/grading-delivery.md)，工作程序与安装步骤见[mac-grader](mac-grader/README.md)。网页新增答卷批改入口。
 
 V9包含新非空成绩身份字段，**回退不能只切换旧jar**；必须遵循一致备份恢复与新增数据保全步骤。本次未部署正式环境。
+
+## 个人管理平台
+
+新增个人首页、自学空间迁移与完整健身模块（V11），共用现有账号。交付、接口、迁移与验证见[平台文档](docs/platform/README.md)。没有部署正式环境。

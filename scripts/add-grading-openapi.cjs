@@ -21,7 +21,7 @@ const nullable = (x) =>
 const object = (props) => ({
   type: "object",
   additionalProperties: false,
-  required: Object.keys(props),
+  ...(Object.keys(props).length ? { required: Object.keys(props) } : {}),
   properties: props,
 });
 const define = (name, props) => (schemas["Local" + name] = object(props));
