@@ -89,6 +89,32 @@ class FitnessHttpMySqlIT {
   for(int n=0;n<2;n++){String date=now.minusDays(n).toString(),id=action();assertThat(write(token,"training-plan",date,plan(id),-1).status()).isEqualTo(200);assertThat(write(token,"training",date,Map.of("status",n==0?"PARTIAL":"SKIPPED","exercises",List.of(exercise(id,false))),-1).status()).isEqualTo(200);}
   var stats=send("GET","/fitness/statistics?from="+now.minusDays(6)+"&to="+now,token,null,null).data();assertThat(stats.path("partialTrainingDays").asInt()).isEqualTo(1);assertThat(stats.path("skippedTrainingDays").asInt()).isEqualTo(1);assertThat(stats.path("trainingRate").decimalValue()).isZero();
  }
+ @Test void importWeekAtomicReplayEditsAndOwnership()throws Exception{
+  String token=login(account(Role.USER)),other=login(account(Role.USER));
+  LocalDate start=LocalDate.parse(today()).plusDays(30);Object rest=Map.of("rest",true,"exercises",List.of());
+  Object meal=Map.of("foods",List.of(Map.of("meal","BREAKFAST","name","鸡蛋","quantity",2,"unit","个")),"note","原文估算，不作精确营养");
+  var days=new ArrayList<Object>();for(int i=0;i<7;i++)days.add(Map.of("training",i==6?rest:plan(action()),"meals",meal,"expectedTrainingRevision",-1,"expectedMealRevision",-1));
+  String collision=start.plusDays(3).toString();assertThat(write(token,"meal-plan",collision,meal,-1).status()).isEqualTo(200);
+  var body=Map.of("startDate",start.toString(),"days",days);String path="/fitness/weeks/import";
+  assertThat(send("POST",path,null,body,action()).status()).isEqualTo(401);
+  assertThat(send("POST",path,token,body,action()).status()).isEqualTo(409);
+  assertThat(send("GET","/fitness/records/training-plan/"+start,token,null,null).data().isNull()).isTrue();
+  assertThat(send("GET","/fitness/records/meal-plan/"+start,token,null,null).data().isNull()).isTrue();
+  @SuppressWarnings("unchecked") var fourth=new HashMap<>((Map<String,Object>)days.get(3));fourth.put("expectedMealRevision",0);days.set(3,fourth);
+  String replayKey=action();var result=send("POST",path,token,body,replayKey);assertThat(result.status()).as(result.body().toString()).isEqualTo(200);
+  assertThat(result.data().path("items").size()).isEqualTo(14);assertThat(send("POST",path,token,body,replayKey).data()).isEqualTo(result.data());
+  assertThat(send("GET","/fitness/records/training-plan/"+start,other,null,null).data().isNull()).isTrue();
+  assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM fitness_record WHERE user_id=? AND kind IN ('training-plan','meal-plan')",Integer.class,user(token))).isEqualTo(14);
+  assertThat(send("GET","/fitness/days/"+start.plusDays(6),token,null,null).data().path("rest").asBoolean()).isTrue();
+  assertThat(send("GET","/fitness/days/"+start,token,null,null).data().path("plannedNutrition").path("kcal").path("knownTotal").isNull()).isTrue();
+  assertThat(write(token,"training-plan",start.toString(),rest,0).status()).isEqualTo(200);
+  assertThat(write(token,"meal-plan",start.toString(),Map.of("foods",List.of(Map.of("meal","BREAKFAST","name","修改鸡蛋","quantity",3,"unit","个"))),0).status()).isEqualTo(200);
+  assertThat(send("GET","/fitness/records/meal-plan/"+start,token,null,null).data().path("data").path("foods").get(0).path("quantity").asInt()).isEqualTo(3);
+  assertThat(send("POST",path,token,Map.of("startDate",start.plusWeeks(1).toString(),"days",days.subList(0,6)),action()).status()).isEqualTo(400);
+  var invalid=new ArrayList<>(days);invalid.set(5,Map.of("training",rest,"meals",meal,"expectedMealRevision",-1));
+  assertThat(send("POST",path,token,Map.of("startDate",start.plusWeeks(1).toString(),"days",invalid),action()).status()).isEqualTo(400);
+  assertThat(send("GET","/fitness/records/training-plan/"+start.plusWeeks(1),token,null,null).data().isNull()).isTrue();
+ }
  @Test void realBrowserDesktopMobileAndLearningCompatibility()throws Exception{
   String name=account(Role.USER),token=login(name),user=user(token),otherName=account(Role.USER);String course="afdac469-0fe4-5007-833c-51a71333967b",cycle="0ebdbbfe-d607-54b5-9c21-4e0adade5e4c";jdbc.update("INSERT INTO enrollment(user_id,cycle_id,course_id,paid) VALUES(?,?,?,true)",user,cycle,course);
   int uiPort;try(var socket=new java.net.ServerSocket(0)){uiPort=socket.getLocalPort();}

@@ -463,6 +463,89 @@ paths:
                 expectedRevision:
                   type: integer
                   minimum: -1
+  /api/v1/fitness/weeks/import:
+    post:
+      tags:
+        - fitness
+      summary: 任意起始日期导入7天训练与食谱，14份计划同一事务保存，版本冲突整体回滚
+      security:
+        - bearerAuth: []
+      parameters:
+        - *a5
+      responses:
+        "200":
+          description: "成功，Cache-Control: no-store"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    enum:
+                      - 0
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/FitnessEntry"
+                        minItems: 14
+                        maxItems: 14
+        "400":
+          description: 40001 非法参数
+        "401":
+          description: 40101 未登录或令牌失效
+        "404":
+          description: 40401 本人资源不存在
+        "409":
+          description: 40901 修订冲突 / 40904 幂等键与请求不符
+        "422":
+          description: 42203 未来实际记录 / 42202 关联错误
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - startDate
+                - days
+              properties:
+                startDate:
+                  type: string
+                  format: date
+                days:
+                  type: array
+                  minItems: 7
+                  maxItems: 7
+                  items:
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - training
+                      - meals
+                      - expectedTrainingRevision
+                      - expectedMealRevision
+                    properties:
+                      training:
+                        $ref: "#/components/schemas/TrainingPlan"
+                      meals:
+                        $ref: "#/components/schemas/Meals"
+                      expectedTrainingRevision:
+                        type: integer
+                        minimum: -1
+                      expectedMealRevision:
+                        type: integer
+                        minimum: -1
   /api/v1/fitness/weeks/generate:
     post:
       tags:

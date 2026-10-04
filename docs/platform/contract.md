@@ -68,3 +68,17 @@ PUT：`{expectedRevision:-1,data:{...}}`。首次创建版本0；更新必须提
 - 日历state：CHECKED_IN / TODAY_PENDING / PAST_MISSING / PARTIAL_RECORDS / FUTURE；rest单独表示，不能和打卡状态互相替代。
 - 营养：每个指标返回knownTotal（没有已知值为null）、knownCount、foodCount、complete。任一食物指标未知，该指标complete=false；零值是明确填零，未知不算零。范围总量只针对实际已记录食物，dietDays另报覆盖天数，不能视为未记录日期的摄入总量。
 - 前端只读取统计结果，曲线仅按实际记录画点，相邻自然日期才连线。UI不再计算第二套均值、完成率或打卡规则。
+
+## 第一周训练与食谱导入（2026-10-04新增）
+
+`POST /api/v1/fitness/weeks/import`，共用当前登录账号，必需UUID `Idempotency-Key`。
+
+请求：`{startDate: "YYYY-MM-DD", days: [{training: TrainingPlan, meals: Meals, expectedTrainingRevision: -1, expectedMealRevision: -1}, ...]}`。
+
+- days严格7项，按Day 1至Day 7排列；startDate可以是任意星期，不要求周一。
+- training/meals和两个版本必填，现有模型/字段组合/日期范围校验继续生效。新建版本-1；覆盖需提供真实当前版本，含删除墓碑版本。
+- 返回`Batch {items: FitnessEntry[]}`，按日期排列，每天先training-plan、后meal-plan，总计14项。
+- 14项和幂等结果同一事务，任一非法值或版本冲突整体回滚；重试同键同内容返回原结果，同键异内容409。
+- 不新建目标、实际训练、实际饮食、体重或打卡；已有实际快照不受计划覆盖影响。
+- 页面内置内容是用户明确提供的计划文本，可编辑预览，首次只有点击保存才写入当前用户数据库。重量范围、可选食物与热量估算保留为备注，不伪造精确营养值。
+- 保存后通过原日计划编辑接口继续修改，也可存为个人模板。

@@ -10,6 +10,7 @@ import java.util.List;
 @io.swagger.v3.oas.annotations.tags.Tag(name="fitness",description="个人健身数据，按当前登录用户隔离，写入需UUID幂等键")
 public class FitnessController {
  private final FitnessService service;
+ @PostMapping("/weeks/import") public ApiResponse<FitnessService.Batch> importWeek(@Valid @RequestBody FitnessService.ImportWeek body,@RequestHeader("Idempotency-Key") String key){return ApiResponse.ok(service.importWeek(body,key));}
  @GetMapping("/summary") public ApiResponse<FitnessService.Summary> summary(){return ApiResponse.ok(service.summary());}
  @GetMapping("/days/{date}") public ApiResponse<FitnessService.Day> day(@PathVariable LocalDate date){return ApiResponse.ok(service.day(date));}
  @GetMapping("/history") public ApiResponse<List<FitnessService.Day>> history(@RequestParam LocalDate from,@RequestParam LocalDate to){return ApiResponse.ok(service.history(from,to));}

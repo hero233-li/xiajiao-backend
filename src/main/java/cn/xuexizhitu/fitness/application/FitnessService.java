@@ -38,6 +38,24 @@ public class FitnessService {
  public record Copy(String sourceKind,String sourceKey,LocalDate destination,@com.fasterxml.jackson.annotation.JsonProperty(required=true) long expectedRevision) {}
  public record GenerateWeek(String templateKey,LocalDate monday,List<Long> expectedRevisions) {}
  public record Batch(List<Entry> items) {}
+ public record ImportDay(@jakarta.validation.constraints.NotNull @jakarta.validation.Valid TrainingPlan training,
+  @jakarta.validation.constraints.NotNull @jakarta.validation.Valid Meals meals,
+  @jakarta.validation.constraints.NotNull @jakarta.validation.constraints.Min(-1) Long expectedTrainingRevision,
+  @jakarta.validation.constraints.NotNull @jakarta.validation.constraints.Min(-1) Long expectedMealRevision) {}
+ public record ImportWeek(@jakarta.validation.constraints.NotNull LocalDate startDate,
+  @jakarta.validation.constraints.NotNull @jakarta.validation.constraints.Size(min=7,max=7) List<@jakarta.validation.constraints.NotNull @jakarta.validation.Valid ImportDay> days) {}
+ @Transactional public Batch importWeek(ImportWeek body,String requestKey){
+  idempotency(requestKey);lock();String user=CurrentUser.idOrThrow(),hash=replay.hash(body);
+  Batch old=replay.find(user,"fitness-import-week",requestKey,hash,Batch.class);if(old!=null)return old;
+  var errors=validator.validate(body);require(errors.isEmpty(),"请提供开始日期、7天训练与食谱，以及各计划版本");
+  List<Entry> rows=new ArrayList<>();
+  for(int i=0;i<7;i++){
+   ImportDay d=body.days().get(i);String date=body.startDate().plusDays(i).toString();
+   rows.add(writeLocked("training-plan",date,new Write(d.expectedTrainingRevision(),null,mapper.valueToTree(d.training()))));
+   rows.add(writeLocked("meal-plan",date,new Write(d.expectedMealRevision(),null,mapper.valueToTree(d.meals()))));
+  }
+  Batch result=new Batch(rows);replay.save(user,"fitness-import-week",requestKey,hash,result);return result;
+ }
  private static final Map<String,Class<?>> TYPES=Map.ofEntries(
   Map.entry("goal",Goal.class),Map.entry("weight",Weight.class),Map.entry("training-plan",TrainingPlan.class),Map.entry("training",Training.class),
   Map.entry("meal-plan",Meals.class),Map.entry("meals",Meals.class),Map.entry("checkin",Checkin.class),Map.entry("water",Water.class),

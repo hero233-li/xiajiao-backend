@@ -1840,5 +1840,1946 @@
         "status": 200
       }
     ]
+  },
+  "firstWeekAddition": {
+    "date": "2026-10-04",
+    "backendHttpIntegration": {
+      "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-failsafe-plugin/xsd/failsafe-test-report.xsd",
+      "version": "3.0.2",
+      "name": "cn.xuexizhitu.FitnessHttpMySqlIT",
+      "time": "57.366",
+      "tests": "6",
+      "errors": "0",
+      "skipped": "0",
+      "failures": "0",
+      "flakes": "0"
+    },
+    "frontendExistingTestsPassed": 243,
+    "frontendNewContentTestsPassed": 3,
+    "build": "passed",
+    "lint": "passed",
+    "realBrowser": {
+      "realHttp": true,
+      "mockRoutes": 0,
+      "desktop": true,
+      "mobile": true,
+      "learningProgress": true,
+      "legacyRedirect": true,
+      "goal": true,
+      "training": true,
+      "meals": true,
+      "weightCreateEdit": true,
+      "checkin": true,
+      "backfill": true,
+      "profile": true,
+      "refresh": true,
+      "relogin": true,
+      "userIsolation": true,
+      "firstWeekImportEdit": true,
+      "errors": [],
+      "calls": [
+        {
+          "path": "/api/v1/auth/login",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/personal/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile/current",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/personal/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/exams/cycles",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/courses/by-code/00023",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/courses/afdac469-0fe4-5007-833c-51a71333967b/learning-position",
+          "method": "GET",
+          "status": 404
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/catalog/courses/afdac469-0fe4-5007-833c-51a71333967b",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/courses/afdac469-0fe4-5007-833c-51a71333967b/learning-position",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/catalog/courses/afdac469-0fe4-5007-833c-51a71333967b/items/8b358ad1-cf5e-5f90-973f-64c9456b60a0/completion",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/courses/afdac469-0fe4-5007-833c-51a71333967b/learning-position",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/courses/by-code/00023",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/catalog/courses/afdac469-0fe4-5007-833c-51a71333967b",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/personal/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal/1d652959-6049-40af-9162-c6745af14d35",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template/433607fe-2c60-430c-8189-bed48101aa3e",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-09-28",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-09-28",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-09-28",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-09-29",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-09-29",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-09-29",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-09-30",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-09-30",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-09-30",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-01",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-10-01",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-01",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-02",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-10-02",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-02",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-03",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-10-03",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-03",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template/c0fd0cd6-0906-4d8d-add8-4150673272c9",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-11",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/weeks/generate",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-11",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-plan/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template/51f142c1-b8e6-4ec9-870f-42e33b1e6576",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meals/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/weight/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/weight/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/checkin/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/weeks/import",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-25",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-plan/2026-10-25",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-25",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-25",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-plan/2026-10-25",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-25",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-25",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/water/2026-10-04",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-03",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/checkin/2026-10-03",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-03",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile/current",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/personal/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/training-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/week-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/meal-template",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/logout",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/personal/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/logout",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/login",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/personal/summary",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/me",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/history",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/days/2026-10-04",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/statistics",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/goal",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/records/profile",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/fitness/summary",
+          "method": "GET",
+          "status": 200
+        }
+      ]
+    },
+    "userBusinessDatabaseModified": false
   }
 }
