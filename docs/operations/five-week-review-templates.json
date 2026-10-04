@@ -1,0 +1,126 @@
+{
+  "status": "PROPOSED_NOT_APPLIED",
+  "estimatedMinutesSource": "人工设置的初始预算，可在管理员页面修改；不是系统测量的学习时长",
+  "courses": [
+    {
+      "courseCode": "00023",
+      "name": "高等数学（工本）",
+      "templates": [
+        {
+          "id": "3281780c-b90f-4a1f-b40b-ffc5148e4d15",
+          "kind": "REVIEW",
+          "title": "高等数学（工本） · 重点概念与公式梳理",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 0
+        },
+        {
+          "id": "18101b02-a7db-48e5-911f-bacc19af30e3",
+          "kind": "REVIEW",
+          "title": "高等数学（工本） · 综合题回顾",
+          "estimatedMinutes": 60,
+          "resource": null,
+          "sortOrder": 1
+        },
+        {
+          "id": "57b932a4-8e47-48fc-acb2-9589f401f8c3",
+          "kind": "REVIEW",
+          "title": "高等数学（工本） · 错题复盘与查漏",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "courseCode": "02324",
+      "name": "离散数学",
+      "templates": [
+        {
+          "id": "a4d4e866-c1e4-42f7-95f2-1e1e9feefdc6",
+          "kind": "REVIEW",
+          "title": "离散数学 · 定义与定理梳理",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 0
+        },
+        {
+          "id": "559d6518-8a02-4701-bb0c-59adedf10aad",
+          "kind": "REVIEW",
+          "title": "离散数学 · 逻辑、集合与图论综合题回顾",
+          "estimatedMinutes": 60,
+          "resource": null,
+          "sortOrder": 1
+        },
+        {
+          "id": "9d4f542b-6a1b-4d95-a55f-c77f19890378",
+          "kind": "REVIEW",
+          "title": "离散数学 · 错题复盘与查漏",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "courseCode": "13015",
+      "name": "计算机系统原理",
+      "templates": [
+        {
+          "id": "ec9c9060-1bd2-4690-9889-7ef984307b31",
+          "kind": "REVIEW",
+          "title": "计算机系统原理 · 重点概念与系统原理回顾",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 0
+        },
+        {
+          "id": "258b9e48-6cd0-4a00-9432-5347efc4ea23",
+          "kind": "REVIEW",
+          "title": "计算机系统原理 · 计算题与流程题回顾",
+          "estimatedMinutes": 60,
+          "resource": null,
+          "sortOrder": 1
+        },
+        {
+          "id": "b605aad4-03f0-4bed-aa21-9f098c965d92",
+          "kind": "REVIEW",
+          "title": "计算机系统原理 · 错题复盘与查漏",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "courseCode": "13175",
+      "name": "线性代数（工）",
+      "templates": [
+        {
+          "id": "7c7ba2f2-ea4e-49db-b334-82e197d68d8e",
+          "kind": "REVIEW",
+          "title": "线性代数（工） · 公式与定理梳理",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 0
+        },
+        {
+          "id": "7f046a11-64d7-4297-8630-eeeb5aa99e64",
+          "kind": "REVIEW",
+          "title": "线性代数（工） · 矩阵与方程组综合题回顾",
+          "estimatedMinutes": 60,
+          "resource": null,
+          "sortOrder": 1
+        },
+        {
+          "id": "cafe4a4e-a6c3-4950-a99c-f5b65e4585bf",
+          "kind": "REVIEW",
+          "title": "线性代数（工） · 错题复盘与查漏",
+          "estimatedMinutes": 45,
+          "resource": null,
+          "sortOrder": 2
+        }
+      ]
+    }
+  ]
+}
