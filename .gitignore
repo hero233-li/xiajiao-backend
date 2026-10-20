@@ -7,3 +7,6 @@
 !.env.example
 *.log
 /deploy/backups/
+
+# 服务器端凭据（仅保存在部署主机）
+mac-grader/server/gate.json
